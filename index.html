@@ -1,651 +1,278 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-bs-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sheriff Tornillo · Carrera en el Desierto</title>
-<meta name="description" content="Sheriff Tornillo: endless runner 3D western hecho en Unity 6. Persigue a los Hermanos Óxido, recupera el oro y llega a 1000 puntos.">
+<title>Sheriff Tornillo · Carrera en el Desierto | Juego oficial</title>
+<meta name="description" content="Sheriff Tornillo: endless runner 3D western hecho en Unity 6. Persigue a los Hermanos Óxido, recupera el oro y llega a 1000 puntos. Juega gratis en tu navegador.">
+<meta name="author" content="Juan Miguel Huanca Uruña · Axel Marcelo Canqui Ticona">
+<meta name="theme-color" content="#1b0e1c">
+<!-- Open Graph: así se ve el enlace al compartirlo en WhatsApp, Teams o Facebook -->
+<meta property="og:type" content="website">
 <meta property="og:title" content="Sheriff Tornillo · Carrera en el Desierto">
 <meta property="og:description" content="Endless runner 3D western hecho en Unity 6. ¡Juega gratis en el navegador!">
-<meta name="theme-color" content="#1c0f1a">
+<meta property="og:image" content="img/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤠</text></svg>">
+
+<!-- Fuentes del juego -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Rye&family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+<!-- Bootstrap 5.3 + Bootstrap Icons + AOS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+<!-- Estilos propios -->
+<link rel="stylesheet" href="css/estilos.css">
 
-<style>
-:root{
-  --noche:#1c0f1a;
-  --noche-2:#2a1626;
-  --guindo:#7a1f2b;
-  --guindo-2:#9e2a36;
-  --naranja:#e8743b;
-  --atardecer:#f2a65a;
-  --oro:#f7c948;
-  --oro-2:#ffdf7e;
-  --arena:#f3e1c1;
-  --arena-2:#e6c99a;
-  --cuero:#8b5a2b;
-  --metal:#7fa3ab;
-  --metal-2:#b9d3d8;
-  --tinta:#2b1a12;
-  --texto:#fbeedd;
-  --texto-suave:#d9c3a8;
-  --radio:18px;
-  --sombra:0 18px 40px -18px rgba(0,0,0,.6);
-  --ancho:1180px;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:76px;overflow-x:clip}
-section{overflow-x:clip}
-body{
-  font-family:"Sniglet",system-ui,sans-serif;
-  background:var(--noche);
-  color:var(--texto);
-  line-height:1.6;
-  overflow-x:hidden;
-}
-img,svg{display:block;max-width:100%}
-a{color:inherit}
-.contenedor{width:min(var(--ancho),100% - 32px);margin-inline:auto}
-.rye{font-family:"Rye",Georgia,serif;font-weight:400;letter-spacing:.02em}
-
-/* ---------- textura de grano ---------- */
-body::before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.07;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* ---------- NAV ---------- */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:50;
-  transition:background .35s, box-shadow .35s, backdrop-filter .35s;
-}
-.nav.solida{background:rgba(28,15,26,.86);backdrop-filter:blur(10px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
-.nav .contenedor{display:flex;align-items:center;justify-content:space-between;height:68px}
-.marca{display:flex;align-items:center;gap:10px;text-decoration:none}
-.marca svg{width:38px;height:38px;filter:drop-shadow(0 2px 0 rgba(0,0,0,.4))}
-.marca span{font-family:"Rye",serif;font-size:1.15rem;color:var(--oro);text-shadow:2px 2px 0 var(--guindo)}
-.marca small{display:block;font-family:"Sniglet";font-size:.68rem;color:var(--texto-suave);letter-spacing:.18em;text-shadow:none;margin-top:-4px}
-.menu{display:flex;gap:6px;list-style:none;align-items:center}
-.menu a{
-  text-decoration:none;font-weight:800;font-size:.95rem;padding:8px 14px;border-radius:999px;
-  color:var(--texto);transition:background .2s,color .2s;
-}
-.menu a:hover,.menu a.activo{background:rgba(247,201,72,.15);color:var(--oro)}
-.menu a.btn-nav{background:var(--oro);color:var(--tinta);box-shadow:0 4px 0 #b8871a}
-.menu a.btn-nav:hover{background:var(--oro-2);color:var(--tinta)}
-.hamburguesa{display:none;background:none;border:0;cursor:pointer;width:44px;height:44px;position:relative}
-.hamburguesa span{position:absolute;left:10px;right:10px;height:3px;border-radius:3px;background:var(--oro);transition:.3s}
-.hamburguesa span:nth-child(1){top:14px}.hamburguesa span:nth-child(2){top:21px}.hamburguesa span:nth-child(3){top:28px}
-.nav.abierta .hamburguesa span:nth-child(1){top:21px;transform:rotate(45deg)}
-.nav.abierta .hamburguesa span:nth-child(2){opacity:0}
-.nav.abierta .hamburguesa span:nth-child(3){top:21px;transform:rotate(-45deg)}
-
-/* ---------- BOTONES ---------- */
-.btn{
-  display:inline-flex;align-items:center;gap:10px;font-family:"Rye",serif;font-size:1.05rem;
-  padding:16px 28px;border-radius:14px;text-decoration:none;border:0;cursor:pointer;
-  transition:transform .15s, box-shadow .15s, background .2s;white-space:nowrap;
-}
-.btn-oro{background:linear-gradient(180deg,var(--oro-2),var(--oro));color:var(--tinta);box-shadow:0 6px 0 #a87a14, 0 14px 30px -8px rgba(247,201,72,.6)}
-.btn-oro:hover{transform:translateY(-2px);box-shadow:0 8px 0 #a87a14, 0 18px 36px -8px rgba(247,201,72,.75)}
-.btn-oro:active{transform:translateY(4px);box-shadow:0 2px 0 #a87a14}
-.btn-borde{background:rgba(0,0,0,.25);color:var(--texto);box-shadow:inset 0 0 0 2px rgba(251,238,221,.5)}
-.btn-borde:hover{box-shadow:inset 0 0 0 2px var(--oro);color:var(--oro)}
-.btn svg{width:22px;height:22px}
-
-/* ---------- HERO ---------- */
-.hero{
-  position:relative;min-height:100vh;display:flex;align-items:center;padding:110px 0 60px;
-  background:
-    radial-gradient(1200px 600px at 75% 70%, rgba(242,166,90,.35), transparent 60%),
-    linear-gradient(180deg,#2a1230 0%,#6b2a3e 38%,#c9553b 70%,#f2a65a 100%);
-  overflow:hidden;
-}
-.hero::after{ /* suelo */
-  content:"";position:absolute;left:0;right:0;bottom:0;height:120px;
-  background:linear-gradient(180deg,#d39a5b,#b9773f);
-  clip-path:polygon(0 40%,15% 30%,35% 42%,55% 28%,78% 40%,100% 26%,100% 100%,0 100%);
-}
-.sol{position:absolute;width:420px;height:420px;border-radius:50%;right:6%;bottom:60px;
-  background:radial-gradient(circle,#ffe7a3 0%,#ffbf5e 45%,rgba(255,140,60,0) 70%);filter:blur(2px);opacity:.9}
-.mesas{position:absolute;left:0;right:0;bottom:90px;height:260px;pointer-events:none}
-.hero .contenedor{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
-.etiqueta{
-  display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:.8rem;letter-spacing:.2em;
-  background:rgba(28,15,26,.55);border:1px solid rgba(247,201,72,.5);color:var(--oro);
-  padding:7px 14px;border-radius:999px;margin-bottom:18px;
-}
-.etiqueta i{width:8px;height:8px;border-radius:50%;background:var(--oro);box-shadow:0 0 10px var(--oro);animation:latido 1.6s infinite}
-@keyframes latido{50%{opacity:.3}}
-.titulo{
-  font-family:"Rye",serif;font-weight:400;line-height:.95;
-  font-size:clamp(3rem,8.2vw,6.4rem);color:var(--oro);
-  text-shadow:0 4px 0 var(--guindo),0 8px 0 #4a1019,0 18px 30px rgba(0,0,0,.45);
-}
-.titulo span{display:block;color:var(--arena);font-size:.52em;margin-top:10px;text-shadow:0 3px 0 var(--guindo),0 10px 22px rgba(0,0,0,.4)}
-.frase{font-family:"Rye",serif;font-size:clamp(1.1rem,2.2vw,1.45rem);margin:22px 0 10px;color:#fff}
-.desc{color:var(--arena);font-size:1.08rem;max-width:560px}
-.ctas{display:flex;flex-wrap:wrap;gap:14px;margin:28px 0 30px}
-.metricas{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:560px}
-.metrica{
-  background:rgba(28,15,26,.6);backdrop-filter:blur(6px);border:1px solid rgba(251,238,221,.15);
-  border-radius:16px;padding:14px 12px;text-align:center;
-}
-.metrica .ico{height:34px;display:flex;justify-content:center;align-items:center;margin-bottom:6px}
-.metrica .ico svg{height:30px;width:auto}
-.metrica b{display:block;font-family:"Rye",serif;font-size:1.5rem;color:var(--oro);line-height:1.1}
-.metrica small{color:var(--texto-suave);font-size:.8rem}
-.teclitas{display:flex;justify-content:center;gap:4px}
-.k{display:inline-grid;place-items:center;min-width:30px;height:30px;padding:0 6px;border-radius:7px;background:var(--arena);color:var(--tinta);
-  font-weight:800;font-size:.85rem;box-shadow:0 3px 0 var(--arena-2),0 4px 0 #6b4a2a}
-
-.arte{position:relative;aspect-ratio:4/3.4;border-radius:26px;overflow:hidden;
-  box-shadow:0 30px 60px -20px rgba(0,0,0,.65),0 0 0 6px rgba(247,201,72,.25),0 0 0 7px rgba(28,15,26,.6);
-  transform:rotate(1.5deg);background:#3a1a2c}
-.arte > svg,.arte > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.arte .sello{
-  position:absolute;left:14px;bottom:14px;z-index:3;font-family:"Rye";font-size:.8rem;
-  background:var(--guindo);color:var(--oro-2);padding:6px 12px;border-radius:8px;transform:rotate(-3deg);
-  box-shadow:0 4px 0 #4a1019;
-}
-.robot-run{animation:trote .42s ease-in-out infinite alternate;transform-origin:center bottom}
-@keyframes trote{from{transform:translateY(0)}to{transform:translateY(-7px)}}
-.polvo circle{animation:polvo 1.1s linear infinite;opacity:0}
-.polvo circle:nth-child(2){animation-delay:.35s}.polvo circle:nth-child(3){animation-delay:.7s}
-@keyframes polvo{0%{opacity:.7;transform:translate(0,0) scale(.6)}100%{opacity:0;transform:translate(-70px,-18px) scale(1.6)}}
-.cactus-pasa{animation:pasa 3.2s linear infinite}
-@keyframes pasa{from{transform:translateX(0)}to{transform:translateX(-760px)}}
-.moneda-gira{animation:gira 1s linear infinite;transform-box:fill-box;transform-origin:center}
-@keyframes gira{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.15)}}
-.flotar{animation:flotar 3s ease-in-out infinite}
-@keyframes flotar{50%{transform:translateY(-10px)}}
-.scroll-ind{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:3;color:var(--tinta);font-weight:800;font-size:.75rem;letter-spacing:.2em;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:4px}
-.scroll-ind::after{content:"";width:2px;height:26px;background:var(--tinta);animation:baja 1.6s infinite}
-@keyframes baja{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-
-/* ---------- SECCIONES ---------- */
-section{position:relative;padding:110px 0}
-.cabecera{text-align:center;max-width:720px;margin:0 auto 56px}
-.cabecera .num{font-family:"Rye";color:var(--naranja);font-size:.95rem;letter-spacing:.25em}
-.cabecera h2{font-family:"Rye",serif;font-weight:400;font-size:clamp(2.1rem,5vw,3.4rem);line-height:1.1;margin:8px 0 14px;color:var(--oro);text-shadow:0 3px 0 var(--guindo)}
-.cabecera p{color:var(--texto-suave);font-size:1.08rem}
-.separador{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:16px;color:var(--oro)}
-.separador::before,.separador::after{content:"";height:2px;width:70px;background:linear-gradient(90deg,transparent,var(--oro))}
-.separador::after{transform:scaleX(-1)}
-
-/* Papel / arena */
-.papel{background:var(--arena);color:var(--tinta)}
-.papel .cabecera h2{color:var(--guindo);text-shadow:0 3px 0 rgba(122,31,43,.18)}
-.papel .cabecera p{color:#6b4a35}
-.papel .separador{color:var(--guindo)}
-.papel .separador::before,.papel .separador::after{background:linear-gradient(90deg,transparent,var(--guindo))}
-.borde-roto-arriba{position:absolute;top:-1px;left:0;right:0;height:40px;color:var(--noche)}
-.borde-roto-abajo{position:absolute;bottom:-1px;left:0;right:0;height:40px;color:var(--noche);transform:scaleY(-1)}
-
-/* ---------- HISTORIA ---------- */
-.historia-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
-.capitulo{position:relative;padding-left:34px;margin-bottom:36px}
-.capitulo::before{content:"";position:absolute;left:9px;top:30px;bottom:-40px;width:2px;background:repeating-linear-gradient(180deg,var(--cuero) 0 8px,transparent 8px 14px)}
-.capitulo:last-child::before{display:none}
-.capitulo .pin{position:absolute;left:0;top:4px;width:20px;height:20px;border-radius:50%;background:var(--guindo);box-shadow:0 0 0 4px rgba(122,31,43,.2)}
-.capitulo h3{font-family:"Rye";font-weight:400;font-size:1.45rem;color:var(--guindo);margin-bottom:8px}
-.capitulo p{color:#4b3325;font-size:1.04rem}
-.capitulo p + p{margin-top:10px}
-.carteles{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-.cartel{
-  background:#f7ead0;border:2px solid #c9a46e;padding:18px 14px 16px;text-align:center;
-  box-shadow:6px 8px 0 rgba(43,26,18,.18);position:relative;
-  background-image:radial-gradient(circle at 20% 10%,rgba(139,90,43,.12),transparent 40%),radial-gradient(circle at 90% 90%,rgba(139,90,43,.15),transparent 40%);
-}
-.cartel:nth-child(1){transform:rotate(-3deg)}.cartel:nth-child(2){transform:rotate(2.5deg);margin-top:26px}
-.cartel:nth-child(3){transform:rotate(1.5deg)}.cartel:nth-child(4){transform:rotate(-2deg);margin-top:-10px}
-.cartel::before{content:"";position:absolute;top:8px;left:50%;width:10px;height:10px;border-radius:50%;background:#555;transform:translateX(-50%);box-shadow:inset -2px -2px 0 #222}
-.cartel .se{font-family:"Rye";color:var(--guindo);font-size:1.25rem;margin-top:6px;letter-spacing:.06em}
-.cartel .cara{height:96px;margin:8px auto;display:grid;place-items:center}
-.cartel .cara svg{height:90px}
-.cartel .nom{font-family:"Rye";font-size:.95rem;color:var(--tinta)}
-.cartel .rec{font-weight:800;color:var(--cuero);font-size:.85rem}
-.cartel.premio{background:var(--guindo);border-color:#4a1019;color:var(--oro-2)}
-.cartel.premio .se,.cartel.premio .nom{color:var(--oro)}
-.cartel.premio .rec{color:var(--arena)}
-
-/* ---------- PERSONAJE ---------- */
-.personaje{background:
-  radial-gradient(700px 500px at 20% 40%,rgba(127,163,171,.18),transparent 60%),
-  radial-gradient(600px 400px at 90% 80%,rgba(122,31,43,.35),transparent 60%),var(--noche)}
-.pj-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
-.pj-visual{position:relative;aspect-ratio:1/1.05;display:grid;place-items:center}
-.pj-visual .aro{position:absolute;inset:6%;border-radius:50%;border:2px dashed rgba(247,201,72,.35);animation:rota 40s linear infinite}
-.pj-visual .aro2{position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle,rgba(247,201,72,.22),transparent 65%)}
-@keyframes rota{to{transform:rotate(360deg)}}
-.pj-visual svg.robot-grande{position:relative;width:72%;filter:drop-shadow(0 24px 30px rgba(0,0,0,.55))}
-.chip{position:absolute;background:rgba(42,22,38,.92);border:1px solid rgba(247,201,72,.4);padding:8px 14px;border-radius:12px;font-weight:800;font-size:.85rem;box-shadow:var(--sombra);white-space:nowrap}
-.chip b{color:var(--oro)}
-.chip.c1{top:10%;left:0}.chip.c2{top:44%;right:-2%}.chip.c3{bottom:10%;left:4%}
-.pj-info h3{font-family:"Rye";font-weight:400;font-size:clamp(1.8rem,4vw,2.6rem);color:var(--oro);line-height:1.1}
-.pj-info .alias{color:var(--naranja);font-weight:800;letter-spacing:.15em;font-size:.85rem;margin:6px 0 16px}
-.pj-info > p{color:var(--texto-suave);font-size:1.05rem}
-.ficha{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:24px 0}
-.ficha div{background:var(--noche-2);border-radius:14px;padding:14px;border:1px solid rgba(251,238,221,.08)}
-.ficha small{color:var(--texto-suave);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase}
-.ficha b{display:block;font-size:1rem;margin-top:2px}
-.habilidades{display:grid;gap:14px}
-.hab{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:center;background:linear-gradient(90deg,rgba(122,31,43,.35),rgba(122,31,43,.05));border-radius:14px;padding:12px 14px}
-.hab .i{width:44px;height:44px;border-radius:12px;background:var(--guindo);display:grid;place-items:center;font-size:1.3rem}
-.hab h4{font-size:1.02rem}
-.hab p{color:var(--texto-suave);font-size:.92rem;line-height:1.4}
-.barra{height:8px;border-radius:8px;background:rgba(251,238,221,.1);margin-top:6px;overflow:hidden}
-.barra i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--naranja),var(--oro));border-radius:8px;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
-.visible .barra i{width:var(--v)}
-
-/* ---------- MECÁNICAS ---------- */
-.mec-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.tarjeta{background:#fff7e8;border-radius:var(--radio);padding:28px;box-shadow:0 14px 30px -18px rgba(43,26,18,.5);border:2px solid #ead3ac}
-.tarjeta h3{font-family:"Rye";font-weight:400;color:var(--guindo);font-size:1.4rem;margin-bottom:16px;display:flex;align-items:center;gap:10px}
-.controles{display:grid;gap:10px}
-.control{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:14px;padding:8px 0;border-bottom:1px dashed #e0c79e}
-.control:last-child{border-bottom:0}
-.control .teclas{display:flex;flex-wrap:wrap;gap:5px}
-.control .k{min-width:34px;height:32px;font-size:.8rem;transition:transform .08s, background .1s}
-.control .k.pulsada{transform:translateY(3px);background:var(--oro);box-shadow:0 0 0 #6b4a2a}
-.control span{color:#4b3325;font-size:.98rem}
-.control span b{color:var(--tinta)}
-.reglas{display:grid;gap:12px}
-.regla{display:grid;grid-template-columns:46px 1fr;gap:12px;align-items:start}
-.regla .e{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;font-size:1.4rem;background:var(--arena)}
-.regla h4{color:var(--tinta);font-size:1.02rem}
-.regla p{color:#5a4030;font-size:.93rem;line-height:1.45}
-.obstaculos{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
-.obs{border-radius:14px;padding:16px;background:var(--arena);border:2px solid #e2c596}
-.obs h4{font-family:"Rye";font-weight:400;color:var(--guindo);font-size:1.05rem}
-.obs .accion{display:inline-block;margin:6px 0 8px;font-weight:800;font-size:.8rem;background:var(--guindo);color:var(--oro-2);padding:3px 10px;border-radius:999px}
-.obs ul{list-style:none;color:#4b3325;font-size:.93rem}
-.obs li::before{content:"✦ ";color:var(--naranja)}
-.fin{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
-.fin div{border-radius:14px;padding:16px}
-.fin .gana{background:#e8f3d8;border:2px solid #9cc26a}
-.fin .pierde{background:#f7dcd8;border:2px solid #d28a80}
-.fin h4{font-family:"Rye";font-weight:400;font-size:1.05rem;margin-bottom:4px}
-.fin p{font-size:.92rem;color:#4b3325;line-height:1.45}
-.mec-full{grid-column:1/-1}
-
-/* Mini juego */
-.demo{background:var(--noche);color:var(--texto);border-color:#3b2234;padding:0;overflow:hidden}
-.demo-top{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center;padding:20px 24px 0}
-.demo-top h3{color:var(--oro);margin:0}
-.demo-top p{color:var(--texto-suave);font-size:.9rem}
-.lienzo-wrap{position:relative;margin:16px 24px 0;border-radius:14px;overflow:hidden;background:#2a1230}
-#mini{display:block;width:100%;height:240px;touch-action:none;cursor:pointer}
-.demo-btns{display:flex;gap:10px;padding:14px 24px 22px;justify-content:center}
-.demo-btns button{flex:1;max-width:200px;font-family:"Rye";font-size:1rem;padding:12px;border-radius:12px;border:0;cursor:pointer;background:var(--noche-2);color:var(--oro);box-shadow:inset 0 0 0 2px rgba(247,201,72,.4);user-select:none;-webkit-user-select:none}
-.demo-btns button:active{background:var(--guindo)}
-
-/* ---------- DATOS ---------- */
-.datos{background:linear-gradient(180deg,var(--noche) 0%,#2b1323 100%)}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
-.kpi{background:var(--noche-2);border-radius:var(--radio);padding:26px 22px;border:1px solid rgba(251,238,221,.08);position:relative;overflow:hidden;transition:transform .25s,border-color .25s}
-.kpi:hover{transform:translateY(-6px);border-color:rgba(247,201,72,.5)}
-.kpi::after{content:"";position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(247,201,72,.18),transparent 70%)}
-.kpi .ico{font-size:1.8rem}
-.kpi b{display:block;font-family:"Rye";font-size:2.6rem;color:var(--oro);line-height:1.1;margin-top:8px}
-.kpi b sup{font-size:.45em;color:var(--naranja);margin-left:2px}
-.kpi h4{font-size:1rem;margin-top:4px}
-.kpi p{color:var(--texto-suave);font-size:.88rem;line-height:1.4;margin-top:4px}
-.info-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:18px}
-.panel{background:var(--noche-2);border-radius:var(--radio);padding:26px;border:1px solid rgba(251,238,221,.08)}
-.panel h3{font-family:"Rye";font-weight:400;color:var(--oro);font-size:1.3rem;margin-bottom:6px}
-.panel > p{color:var(--texto-suave);font-size:.92rem;margin-bottom:18px}
-.ruta{position:relative;height:16px;border-radius:16px;background:rgba(251,238,221,.08);margin:56px 6px 40px}
-.ruta .rel{position:absolute;inset:0;width:0;border-radius:16px;background:linear-gradient(90deg,#8bb6bf,var(--atardecer),var(--naranja),var(--guindo-2));transition:width 2.2s cubic-bezier(.3,.7,.2,1)}
-.visible .ruta .rel{width:100%}
-.hito{position:absolute;top:50%;transform:translate(-50%,-50%);text-align:center}
-.hito .pt{width:26px;height:26px;border-radius:50%;background:var(--noche);border:3px solid var(--oro);margin:auto;display:grid;place-items:center;font-size:.7rem}
-.hito .arriba{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);white-space:nowrap;color:var(--oro);font-size:1rem;letter-spacing:2px}
-.hito .abajo{position:absolute;top:34px;left:50%;transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:.85rem;color:var(--texto-suave)}
-.vel{display:flex;align-items:end;gap:6px;height:120px;margin-top:6px}
-.vel i{flex:1;border-radius:6px 6px 2px 2px;background:linear-gradient(180deg,var(--oro),var(--naranja));height:0;transition:height 1s cubic-bezier(.2,.8,.2,1)}
-.vel-eje{display:flex;justify-content:space-between;color:var(--texto-suave);font-size:.8rem;margin-top:8px}
-.fuentes{display:grid;gap:12px}
-.fuente{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center}
-.fuente span{font-weight:800}
-.fuente em{font-style:normal;color:var(--oro);font-family:"Rye"}
-.fuente .barra{grid-column:1/-1;height:10px;margin-top:0}
-.tec{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
-.tec div{background:rgba(127,163,171,.08);border:1px solid rgba(127,163,171,.25);border-radius:14px;padding:16px}
-.tec b{color:var(--metal-2);font-size:.98rem}
-.tec p{color:var(--texto-suave);font-size:.85rem;line-height:1.4;margin-top:4px}
-
-/* ---------- JUGAR ---------- */
-.jugar{background:
-  radial-gradient(900px 500px at 50% 0%,rgba(232,116,59,.35),transparent 60%),
-  linear-gradient(180deg,#2b1323,#1c0f1a)}
-.consola{max-width:980px;margin:0 auto;border-radius:24px;padding:14px;background:linear-gradient(180deg,#5b3a22,#3e2615);box-shadow:0 40px 80px -30px rgba(0,0,0,.8),inset 0 2px 0 rgba(255,255,255,.12)}
-.pantalla{position:relative;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#140a12}
-.pantalla iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.portada{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:20px;
-  background:linear-gradient(180deg,rgba(28,15,26,.25),rgba(28,15,26,.85)),linear-gradient(180deg,#3a1636 0%,#a5433a 60%,#f2a65a 100%)}
-.portada h3{font-family:"Rye";font-weight:400;font-size:clamp(1.6rem,4.5vw,3rem);color:var(--oro);text-shadow:0 4px 0 var(--guindo)}
-.portada p{color:var(--arena);margin:6px 0 20px}
-.play{width:96px;height:96px;border-radius:50%;border:0;cursor:pointer;margin:0 auto 14px;display:grid;place-items:center;
-  background:var(--oro);box-shadow:0 0 0 10px rgba(247,201,72,.25),0 0 0 22px rgba(247,201,72,.1);animation:pulso 2s infinite}
-.play svg{width:40px;height:40px;margin-left:6px}
-@keyframes pulso{50%{box-shadow:0 0 0 16px rgba(247,201,72,.2),0 0 0 32px rgba(247,201,72,.05)}}
-.consola-pie{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;padding:14px 8px 4px;color:var(--arena-2);font-size:.88rem}
-.consola-pie a{color:var(--oro);font-weight:800}
-.req-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:980px;margin:36px auto 0}
-.req{background:var(--noche-2);border-radius:var(--radio);padding:22px;border:1px solid rgba(251,238,221,.08)}
-.req h4{font-family:"Rye";font-weight:400;color:var(--oro);font-size:1.1rem;margin-bottom:10px}
-.req ul{list-style:none;color:var(--texto-suave);font-size:.93rem;display:grid;gap:7px}
-.req li{padding-left:22px;position:relative}
-.req li::before{content:"✔";position:absolute;left:0;color:var(--naranja)}
-.req ol{padding-left:20px;color:var(--texto-suave);font-size:.93rem;display:grid;gap:7px}
-
-/* ---------- FOOTER ---------- */
-footer{background:#120910;padding:56px 0 30px;border-top:4px solid var(--guindo)}
-.pie{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:30px}
-.pie h5{font-family:"Rye";font-weight:400;color:var(--oro);font-size:1rem;margin-bottom:10px}
-.pie p,.pie li{color:var(--texto-suave);font-size:.92rem}
-.pie ul{list-style:none;display:grid;gap:4px}
-.pie a{text-decoration:none}.pie a:hover{color:var(--oro)}
-.legal{margin-top:36px;padding-top:18px;border-top:1px solid rgba(251,238,221,.08);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:#8a7766;font-size:.82rem}
-
-/* ---------- REVEAL ---------- */
-.rv{opacity:0;transform:translateY(34px);transition:opacity .8s ease, transform .8s cubic-bezier(.2,.8,.2,1)}
-.rv.visible{opacity:1;transform:none}
-.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
-
-/* ---------- RESPONSIVE ---------- */
-@media (max-width:1020px){
-  .hero .contenedor,.historia-grid,.pj-grid,.mec-grid,.info-grid{grid-template-columns:1fr}
-  .arte{max-width:620px;margin:0 auto;width:100%}
-  .kpis{grid-template-columns:repeat(2,1fr)}
-  .tec{grid-template-columns:repeat(2,1fr)}
-  .pj-visual{max-width:440px;margin:0 auto;width:100%}
-  .carteles{max-width:520px;margin:0 auto}
-}
-@media (max-width:860px){
-  .hamburguesa{display:block}
-  .menu{position:fixed;top:68px;left:0;right:0;flex-direction:column;align-items:stretch;gap:2px;padding:14px 16px 22px;
-    background:rgba(28,15,26,.97);backdrop-filter:blur(10px);transform:translateY(-120%);transition:transform .35s ease;box-shadow:0 20px 40px rgba(0,0,0,.4)}
-  .nav.abierta .menu{transform:none}
-  .nav.abierta{background:rgba(28,15,26,.97)}
-  .menu a{display:block;padding:12px 14px;font-size:1.05rem}
-  .menu a.btn-nav{text-align:center;margin-top:8px}
-  .req-grid,.pie{grid-template-columns:1fr}
-}
-@media (max-width:620px){
-  section{padding:80px 0}
-  .metricas{grid-template-columns:repeat(3,1fr);gap:8px}
-  .metrica{padding:10px 6px}.metrica b{font-size:1.15rem}.metrica small{font-size:.7rem}
-  .k{min-width:24px;height:26px;font-size:.75rem;padding:0 4px}
-  .ctas .btn{flex:1;justify-content:center;padding:14px 18px;font-size:.95rem}
-  .kpis{grid-template-columns:1fr 1fr;gap:12px}
-  .kpi{padding:18px 14px}.kpi b{font-size:2rem}
-  .tec{grid-template-columns:1fr}
-  .ficha{grid-template-columns:1fr}
-  .obstaculos,.fin{grid-template-columns:1fr}
-  .control{grid-template-columns:1fr;gap:6px}
-  .tarjeta{padding:20px}
-  .chip{font-size:.75rem;padding:6px 10px}
-  .sol{width:260px;height:260px}
-  .hito .abajo{font-size:.72rem}
-  .hito .arriba{font-size:.8rem;letter-spacing:0}
-  #mini{height:200px}
-  .demo-top,.demo-btns{padding-left:16px;padding-right:16px}
-  .lienzo-wrap{margin:14px 16px 0}
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
-  .rv{opacity:1;transform:none}
-  html{scroll-behavior:auto}
-}
-</style>
+<!-- Datos estructurados para buscadores -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"VideoGame","name":"Sheriff Tornillo: Carrera en el Desierto","genre":["Endless runner","Western"],"gamePlatform":"Web browser (WebGL)","applicationCategory":"Game","operatingSystem":"Any","author":[{"@type":"Person","name":"Juan Miguel Huanca Uruña"},{"@type":"Person","name":"Axel Marcelo Canqui Ticona"}],"url":"https://play.unity.com/en/games/3797a0b4-e17b-46d5-ab0b-ebe0cbc3c7af/sheriff-tornillo","image":"img/captura.jpg","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
 </head>
+
 <body>
 
-<!-- =========================================================
-     ⚙️  CONFIGURA AQUÍ TU JUEGO (busca también CONFIG en el JS)
-     ========================================================= -->
+<!-- Precarga -->
+<div id="precarga" aria-hidden="true">
+  <div>
+    <svg class="tuerca mx-auto d-block" viewBox="0 0 100 100"><path d="M50 4l10 8 13-2 5 12 12 5-2 13 8 10-8 10 2 13-12 5-5 12-13-2-10 8-10-8-13 2-5-12-12-5 2-13-8-10 8-10-2-13 12-5 5-12 13 2z" fill="#f9c33b" stroke="#8e1a4a" stroke-width="4"/><circle cx="50" cy="50" r="16" fill="#1b0e1c" stroke="#8e1a4a" stroke-width="4"/></svg>
+    <p>Ajustando tornillos…</p>
+  </div>
+</div>
+<div id="progreso"></div>
 
-<!-- Símbolos SVG reutilizables -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<!-- Símbolos SVG -->
+<svg width="0" height="0" class="position-absolute" aria-hidden="true">
   <defs>
-    <linearGradient id="gMetal" x1="0" x2="1">
-      <stop offset="0" stop-color="#6d929a"/><stop offset=".5" stop-color="#b9d3d8"/><stop offset="1" stop-color="#5f838b"/>
-    </linearGradient>
-    <linearGradient id="gHat" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#a3303d"/><stop offset="1" stop-color="#6a1824"/>
-    </linearGradient>
-    <symbol id="estrella" viewBox="0 0 24 24"><path d="M12 1.8l3 6.4 7 .9-5.1 4.8 1.3 6.9L12 17.5l-6.2 3.3 1.3-6.9L2 9.1l7-.9z" fill="#f7c948" stroke="#a87a14" stroke-width="1.2" stroke-linejoin="round"/></symbol>
-    <symbol id="sombrero" viewBox="0 0 48 30"><path d="M4 22c6 5 34 5 40 0-3-1-6-1-8-2l-2-14c-1-4-4-5-7-3-2 1-3 1-5 0-3-2-6-1-7 3l-2 14c-2 1-6 1-9 2z" fill="url(#gHat)" stroke="#3d0d14" stroke-width="1.5"/><path d="M13 17c6 2 16 2 22 0" stroke="#f7c948" stroke-width="2.4" fill="none"/></symbol>
-    <symbol id="moneda" viewBox="0 0 30 30"><circle cx="15" cy="15" r="13" fill="#f7c948" stroke="#a87a14" stroke-width="2"/><circle cx="15" cy="15" r="9" fill="none" stroke="#ffe7a0" stroke-width="1.4"/><path d="M10.5 9v7a4.5 4.5 0 0 0 9 0V9" fill="none" stroke="#8a5f0c" stroke-width="2.6" stroke-linecap="round"/></symbol>
-
-    <!-- Robot sheriff (diseño original) -->
-    <symbol id="robot" viewBox="0 0 200 260">
-      <!-- antena -->
-      <line x1="100" y1="40" x2="100" y2="20" stroke="#4d6a71" stroke-width="4"/>
-      <!-- sombrero -->
-      <path d="M30 70c18 14 122 14 140 0-10-4-22-5-30-7l-6-36c-3-12-14-15-24-8-6 4-14 4-20 0-10-7-21-4-24 8l-6 36c-8 2-20 3-30 7z" fill="url(#gHat)" stroke="#3d0d14" stroke-width="3"/>
-      <path d="M62 58c24 7 52 7 76 0" stroke="#f7c948" stroke-width="5" fill="none"/>
-      <!-- cabeza -->
-      <rect x="56" y="74" width="88" height="62" rx="16" fill="url(#gMetal)" stroke="#3e5a60" stroke-width="3"/>
-      <rect x="66" y="88" width="68" height="26" rx="13" fill="#1c0f1a"/>
-      <circle cx="84" cy="101" r="7" fill="#ffd36b"><animate attributeName="r" values="7;7;1;7" keyTimes="0;.9;.95;1" dur="4s" repeatCount="indefinite"/></circle>
-      <circle cx="116" cy="101" r="7" fill="#ffd36b"><animate attributeName="r" values="7;7;1;7" keyTimes="0;.9;.95;1" dur="4s" repeatCount="indefinite"/></circle>
-      <path d="M86 124h28" stroke="#3e5a60" stroke-width="3" stroke-linecap="round"/>
-      <circle cx="56" cy="104" r="7" fill="#4d6a71"/><circle cx="144" cy="104" r="7" fill="#4d6a71"/>
-      <!-- cuello -->
-      <rect x="88" y="136" width="24" height="10" fill="#4d6a71"/>
-      <!-- pañuelo -->
-      <path d="M74 146h52l-26 22z" fill="#9e2a36" stroke="#4a1019" stroke-width="2"/>
-      <!-- cuerpo -->
-      <rect x="60" y="146" width="80" height="66" rx="14" fill="url(#gMetal)" stroke="#3e5a60" stroke-width="3"/>
-      <path d="M74 146h52l-26 22z" fill="#9e2a36" stroke="#4a1019" stroke-width="2"/>
-      <!-- estrella -->
-      <g transform="translate(103 172)"><use href="#estrella" x="0" y="0" width="28" height="28"/></g>
-      <circle cx="78" cy="196" r="3" fill="#3e5a60"/><circle cx="90" cy="196" r="3" fill="#3e5a60"/>
-      <!-- cinturon -->
-      <rect x="60" y="204" width="80" height="10" fill="#6b4226"/><rect x="92" y="203" width="16" height="12" rx="2" fill="#f7c948" stroke="#a87a14" stroke-width="1.5"/>
-      <!-- brazos -->
-      <rect x="36" y="152" width="20" height="50" rx="10" fill="url(#gMetal)" stroke="#3e5a60" stroke-width="3" transform="rotate(14 46 152)"/>
-      <rect x="144" y="152" width="20" height="50" rx="10" fill="url(#gMetal)" stroke="#3e5a60" stroke-width="3" transform="rotate(-24 154 152)"/>
-      <!-- piernas -->
-      <rect x="70" y="212" width="22" height="34" rx="6" fill="#4d6a71" stroke="#3e5a60" stroke-width="3"/>
-      <rect x="108" y="212" width="22" height="34" rx="6" fill="#4d6a71" stroke="#3e5a60" stroke-width="3"/>
-      <!-- botas -->
-      <path d="M64 240h32v14H60c0-8 2-14 4-14z" fill="#6b4226" stroke="#3b2414" stroke-width="2"/>
-      <path d="M104 240h32c2 0 4 6 4 14h-36z" fill="#6b4226" stroke="#3b2414" stroke-width="2"/>
-    </symbol>
-
-    <!-- Cara de forajido oxidado -->
+    <symbol id="estrella" viewBox="0 0 24 24"><path d="M12 1.8l3 6.4 7 .9-5.1 4.8 1.3 6.9L12 17.5l-6.2 3.3 1.3-6.9L2 9.1l7-.9z" fill="#f9c33b" stroke="#a87a14" stroke-width="1.2" stroke-linejoin="round"/></symbol>
     <symbol id="oxido" viewBox="0 0 100 100">
       <path d="M14 34c10 8 62 8 72 0-6-2-12-3-16-4l-3-18c-2-6-8-7-12-4-3 2-7 2-10 0-4-3-10-2-12 4l-3 18c-4 1-10 2-16 4z" fill="#3b2a22" stroke="#1d130e" stroke-width="2"/>
       <rect x="24" y="36" width="52" height="46" rx="10" fill="#a0572d" stroke="#5b2c12" stroke-width="2.5"/>
       <circle cx="34" cy="48" r="3" fill="#6d3415"/><circle cx="66" cy="72" r="4" fill="#6d3415"/><circle cx="60" cy="44" r="2" fill="#6d3415"/>
-      <rect x="30" y="50" width="40" height="12" rx="6" fill="#1c0f1a"/>
+      <rect x="30" y="50" width="40" height="12" rx="6" fill="#1b0e1c"/>
       <circle cx="40" cy="56" r="3.5" fill="#ff5a3c"/><circle cx="60" cy="56" r="3.5" fill="#ff5a3c"/>
       <path d="M24 64h52v18H24z" fill="#2b2b3a"/>
-      <path d="M24 64h52" stroke="#151522" stroke-width="2"/>
     </symbol>
+    <symbol id="moneda" viewBox="0 0 30 30"><circle cx="15" cy="15" r="13" fill="#f9c33b" stroke="#a87a14" stroke-width="2"/><circle cx="15" cy="15" r="9" fill="none" stroke="#ffe7a0" stroke-width="1.4"/><path d="M10.5 9v7a4.5 4.5 0 0 0 9 0V9" fill="none" stroke="#8a5f0c" stroke-width="2.6" stroke-linecap="round"/></symbol>
+    <symbol id="cactus" viewBox="0 0 80 100"><path d="M30 98V18a10 10 0 0 1 20 0v80z" fill="#4c8a52" stroke="#244a29" stroke-width="3"/><path d="M30 58H16a8 8 0 0 1-8-8V34a7 7 0 0 1 14 0v12h8M50 48h12V28a7 7 0 0 1 14 0v24a8 8 0 0 1-8 8H50" fill="#4c8a52" stroke="#244a29" stroke-width="3"/><path d="M40 26v6M36 50v6M44 70v6" stroke="#2c5a31" stroke-width="2"/></symbol>
+    <symbol id="tnt" viewBox="0 0 80 100"><path d="M40 4c-6 0-6 10 0 12" stroke="#5b3a22" stroke-width="3" fill="none"/><circle cx="41" cy="5" r="4" fill="#ffb347"/><rect x="8" y="18" width="64" height="80" rx="10" fill="#b03a2e" stroke="#4a1019" stroke-width="3"/><rect x="8" y="30" width="64" height="6" fill="#7c2018"/><rect x="8" y="80" width="64" height="6" fill="#7c2018"/><text x="40" y="66" text-anchor="middle" font-family="Rye,serif" font-size="22" fill="#ffe08a">TNT</text></symbol>
+    <symbol id="cartelSB" viewBox="0 0 90 100"><rect x="14" y="40" width="6" height="58" fill="#6b4226"/><rect x="70" y="40" width="6" height="58" fill="#6b4226"/><rect x="4" y="6" width="82" height="58" rx="4" fill="#f7ead0" stroke="#8b5a2b" stroke-width="3"/><text x="45" y="26" text-anchor="middle" font-family="Rye,serif" font-size="13" fill="#8e1a4a">SE BUSCA</text><rect x="30" y="32" width="30" height="24" rx="4" fill="#a0572d"/><rect x="34" y="38" width="22" height="7" rx="3" fill="#1b0e1c"/></symbol>
+    <symbol id="buitre" viewBox="0 0 100 70"><path d="M50 34C38 14 18 10 2 16c16 4 28 14 38 24z" fill="#3a2a36" stroke="#1b0e1c" stroke-width="2.5"/><path d="M50 34C62 14 82 10 98 16c-16 4-28 14-38 24z" fill="#3a2a36" stroke="#1b0e1c" stroke-width="2.5"/><ellipse cx="50" cy="42" rx="16" ry="12" fill="#4b3646" stroke="#1b0e1c" stroke-width="2.5"/><circle cx="50" cy="28" r="7" fill="#d98a8a"/><path d="M50 30l4 8-6-3z" fill="#f9c33b"/><circle cx="48" cy="27" r="1.6" fill="#1b0e1c"/><path d="M38 34c8 4 16 4 24 0" stroke="#f3e6d8" stroke-width="4" fill="none"/></symbol>
   </defs>
 </svg>
 
 <!-- ================= 1. NAVEGACIÓN ================= -->
-<header class="nav" id="nav">
-  <div class="contenedor">
-    <a href="#inicio" class="marca" aria-label="Sheriff Tornillo, inicio">
-      <svg viewBox="0 0 24 24"><use href="#estrella"/></svg>
-      <span>Sheriff Tornillo<small>CARRERA EN EL DESIERTO</small></span>
+<nav class="navbar navbar-expand-lg fixed-top" id="nav" aria-label="Navegación principal">
+  <div class="container">
+    <a class="navbar-brand text-decoration-none" href="#inicio">
+      <svg class="logo" viewBox="0 0 24 24"><use href="#estrella"/></svg>
+      <span><span class="t1">Sheriff Tornillo</span><span class="t2">CARRERA EN EL DESIERTO</span></span>
     </a>
-    <button class="hamburguesa" id="hamb" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
-    <ul class="menu" id="menu">
-      <li><a href="#historia">Historia</a></li>
-      <li><a href="#personaje">Personaje</a></li>
-      <li><a href="#mecanicas">Mecánicas</a></li>
-      <li><a href="#datos">Datos</a></li>
-      <li><a href="#jugar" class="btn-nav">▶ Jugar ahora</a></li>
-    </ul>
+    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMovil" aria-controls="menuMovil" aria-label="Abrir menú"><i class="bi bi-list"></i></button>
+    <div class="collapse navbar-collapse" id="menuPrincipal">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+        <li class="nav-item"><a class="nav-link" href="#historia">Historia</a></li>
+        <li class="nav-item"><a class="nav-link" href="#personaje">Personaje</a></li>
+        <li class="nav-item"><a class="nav-link" href="#mecanicas">Mecánicas</a></li>
+        <li class="nav-item"><a class="nav-link" href="#datos">Datos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
+        <li class="nav-item ms-lg-2"><a class="btn btn-st btn-st-jugar btn-st-sm" href="#jugar"><i class="bi bi-play-fill"></i> Jugar ahora</a></li>
+      </ul>
+    </div>
   </div>
-</header>
+</nav>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="menuMovil" aria-labelledby="menuMovilTitulo">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title font-rye text-oro" id="menuMovilTitulo">Sheriff Tornillo</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column">
+    <nav class="nav flex-column gap-1">
+      <a class="nav-link" href="#historia" data-bs-dismiss="offcanvas"><i class="bi bi-book me-2"></i>Historia</a>
+      <a class="nav-link" href="#personaje" data-bs-dismiss="offcanvas"><i class="bi bi-person-badge me-2"></i>Personaje</a>
+      <a class="nav-link" href="#mecanicas" data-bs-dismiss="offcanvas"><i class="bi bi-controller me-2"></i>Mecánicas</a>
+      <a class="nav-link" href="#datos" data-bs-dismiss="offcanvas"><i class="bi bi-bar-chart me-2"></i>Datos</a>
+      <a class="nav-link" href="#faq" data-bs-dismiss="offcanvas"><i class="bi bi-question-circle me-2"></i>Preguntas frecuentes</a>
+    </nav>
+    <a class="btn btn-st btn-st-jugar mt-4" href="#jugar" data-bs-dismiss="offcanvas"><i class="bi bi-play-fill"></i> JUGAR AHORA</a>
+    <p class="text-suave small mt-auto mb-0">Game Development · Univalle 2026</p>
+  </div>
+</div>
 
 <main>
 <!-- ================= 2. SECCIÓN PRINCIPAL ================= -->
-<section class="hero" id="inicio">
+<header class="hero" id="inicio">
   <div class="sol" id="sol"></div>
-  <svg class="mesas" viewBox="0 0 1440 260" preserveAspectRatio="none" aria-hidden="true">
-    <path d="M0 260V170l90-10 20-60h120l20 60 140 10 60-20 50 30h200l30-90h160l30 90 140-10 40-40 80 10 40 30 110 10 70-40h40v120z" fill="#8a3a3a" opacity=".55"/>
-    <path d="M0 260v-50l160-8 30-50h90l30 50 220 10 120-30 80 30 200-12 40-60h110l40 60 180 6 140-10v64z" fill="#6b2a35" opacity=".8"/>
+  <canvas id="polvo" aria-hidden="true"></canvas>
+  <svg class="mesas" viewBox="0 0 1440 300" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 300V200l90-10 20-60h120l20 60 140 10 60-20 50 30h200l30-90h160l30 90 140-10 40-40 80 10 40 30 110 10 70-40h40v150z" fill="#8a3a3a" opacity=".5"/>
+    <path d="M0 300v-60l160-8 30-50h90l30 50 220 10 120-30 80 30 200-12 40-60h110l40 60 180 6 140-10v74z" fill="#6b2a35" opacity=".75"/>
+    <path d="M0 300v-30c240-20 480 8 720-4s480-14 720 2v32z" fill="#e8b27a"/>
   </svg>
 
-  <div class="contenedor">
-    <div>
-      <div class="etiqueta rv"><i></i>ENDLESS RUNNER 3D · WESTERN</div>
-      <h1 class="titulo rv d1">Sheriff Tornillo<span>Carrera en el Desierto</span></h1>
-      <p class="frase rv d2">“El oro no se recupera solo, compañero.”</p>
-      <p class="desc rv d2">Los Hermanos Óxido asaltaron el pueblo y huyen con todo el oro. Ponte en las botas de metal del Sheriff Tornillo, corre sin parar por el desierto, salta cactus, deslízate bajo los carteles de <em>SE BUSCA</em> y llega a <b>1000 puntos</b> antes de que se te acaben los sombreros.</p>
-      <div class="ctas rv d3">
-        <a href="#jugar" class="btn btn-oro"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l12.5-7.5z"/></svg>JUGAR AHORA</a>
-        <a href="#historia" class="btn btn-borde"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5a2 2 0 0 1 2-2h12v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>Conoce la historia</a>
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div data-aos="fade-up"><span class="insignia"><span class="punto"></span>ENDLESS RUNNER 3D · WESTERN</span></div>
+        <h1 class="hero-titulo" data-aos="fade-up" data-aos-delay="100">Sheriff<br>Tornillo</h1>
+        <div class="hero-sub" data-aos="fade-up" data-aos-delay="150">Carrera en el Desierto</div>
+        <p class="hero-frase" data-aos="fade-up" data-aos-delay="200"><span id="maquina">El oro no se recupera solo, compañero.</span><span class="cursor"></span></p>
+        <p class="hero-desc" data-aos="fade-up" data-aos-delay="250">Los <b>Hermanos Óxido</b> asaltaron el pueblo y huyen con todo el oro. Corre sin parar por el desierto, salta cactus y barriles de TNT, deslízate bajo carteles y buitres, y llega a <b>1000 puntos</b> antes de que se te acaben los sombreros.</p>
+        <div class="d-flex flex-wrap gap-3 my-4" data-aos="fade-up" data-aos-delay="300">
+          <a href="#jugar" class="btn btn-st btn-st-jugar"><i class="bi bi-play-fill me-1"></i>JUGAR AHORA</a>
+          <a href="#historia" class="btn btn-st btn-st-pizarra"><i class="bi bi-book me-1"></i>Conoce la historia</a>
+        </div>
+        <div class="row g-2 g-sm-3" style="max-width:560px" data-aos="fade-up" data-aos-delay="350">
+          <div class="col-4"><div class="metrica"><i class="bi bi-trophy-fill"></i><b data-cuenta="1000">1000</b><small>puntos para ganar</small></div></div>
+          <div class="col-4"><div class="metrica"><i class="bi bi-heart-fill" style="color:var(--st-rosa)"></i><b data-cuenta="3">3</b><small>vidas (sombreros)</small></div></div>
+          <div class="col-4"><div class="metrica"><div class="d-flex justify-content-center gap-1 mb-1"><span class="tecla">↑</span><span class="tecla">↓</span></div><b style="font-size:.95rem">Saltar · Deslizar</b><small>controles</small></div></div>
+        </div>
       </div>
-      <div class="metricas rv d3">
-        <div class="metrica"><div class="ico"><svg viewBox="0 0 24 24"><use href="#estrella"/></svg></div><b>1000</b><small>puntos para ganar</small></div>
-        <div class="metrica"><div class="ico"><svg viewBox="0 0 48 30" style="height:24px"><use href="#sombrero"/></svg></div><b>3</b><small>vidas iniciales</small></div>
-        <div class="metrica"><div class="ico teclitas"><span class="k">↑</span><span class="k">↓</span></div><b style="font-size:1rem;margin-top:2px">Saltar · Deslizar</b><small>controles</small></div>
-      </div>
-    </div>
 
-    <!-- Arte promocional. Si subes img/captura.jpg aparece encima automáticamente -->
-    <div class="arte rv d2">
-      <svg viewBox="0 0 640 544" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Arte promocional: el Sheriff Tornillo corriendo por el desierto al atardecer">
-        <defs>
-          <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#3a1636"/><stop offset=".45" stop-color="#a5433a"/><stop offset=".8" stop-color="#f2a65a"/><stop offset="1" stop-color="#ffd38a"/>
-          </linearGradient>
-          <radialGradient id="solg"><stop offset="0" stop-color="#fff1c2"/><stop offset=".5" stop-color="#ffc15e"/><stop offset="1" stop-color="#ff8c3c" stop-opacity="0"/></radialGradient>
-        </defs>
-        <rect width="640" height="544" fill="url(#cielo)"/>
-        <circle cx="470" cy="300" r="150" fill="url(#solg)"/>
-        <!-- nubes -->
-        <g fill="#ffd9a8" opacity=".55"><ellipse cx="120" cy="110" rx="70" ry="14"/><ellipse cx="160" cy="98" rx="40" ry="12"/><ellipse cx="500" cy="80" rx="80" ry="12"/></g>
-        <!-- buitres -->
-        <g fill="none" stroke="#2a1230" stroke-width="4" stroke-linecap="round" class="flotar">
-          <path d="M140 170q14-14 26 0q12-14 26 0"/><path d="M220 140q10-10 18 0q8-10 18 0"/>
-        </g>
-        <!-- mesas -->
-        <path d="M0 380l40-6 20-70h110l20 70 120 8 30-40h150l30 40 120 6v200H0z" fill="#7a2f35" opacity=".85"/>
-        <!-- suelo -->
-        <path d="M0 420c120-14 260 10 400-4s180-8 240 0v128H0z" fill="#d39a5b"/>
-        <path d="M0 470c160-10 300 6 640-6v80H0z" fill="#b9773f"/>
-        <g stroke="#a6662f" stroke-width="3" stroke-linecap="round" opacity=".6"><path d="M40 500h40M200 520h60M420 495h30M520 525h50"/></g>
-        <!-- monedas en arco -->
-        <g>
-          <use href="#moneda" class="moneda-gira" x="300" y="300" width="28" height="28"/>
-          <use href="#moneda" class="moneda-gira" x="345" y="275" width="28" height="28" style="animation-delay:.15s"/>
-          <use href="#moneda" class="moneda-gira" x="390" y="300" width="28" height="28" style="animation-delay:.3s"/>
-        </g>
-        <!-- cactus que pasa -->
-        <g class="cactus-pasa">
-          <g transform="translate(560 360)">
-            <path d="M30 100V20a12 12 0 0 1 24 0v80z" fill="#3f7a46" stroke="#244a29" stroke-width="3"/>
-            <path d="M30 60H16a8 8 0 0 1-8-8V36a7 7 0 0 1 14 0v12h8M54 50h12V30a7 7 0 0 1 14 0v24a8 8 0 0 1-8 8H54" fill="#3f7a46" stroke="#244a29" stroke-width="3"/>
-          </g>
-          <g transform="translate(980 340)">
-            <rect x="0" y="40" width="70" height="80" rx="8" fill="#9b2f2f" stroke="#4a1019" stroke-width="3"/>
-            <text x="35" y="90" text-anchor="middle" font-family="Rye" font-size="22" fill="#ffdf7e">TNT</text>
-          </g>
-        </g>
-        <!-- polvo -->
-        <g class="polvo" fill="#f1cf9d"><circle cx="150" cy="470" r="14"/><circle cx="150" cy="474" r="10"/><circle cx="150" cy="468" r="12"/></g>
-        <!-- robot -->
-        <g class="robot-run"><use href="#robot" x="140" y="230" width="190" height="247"/></g>
-      </svg>
-      <img src="img/captura.png" alt="Captura del juego Sheriff Tornillo" onerror="this.remove()">
-      <div class="sello">Hecho en Unity 6</div>
+      <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="200">
+        <div class="monitor" data-tilt data-tilt-max="6" data-tilt-glare data-tilt-max-glare=".15" data-tilt-scale="1.02">
+          <div class="barra-ventana"><span></span><span></span><span></span><em>play.unity.com · sheriff-tornillo</em></div>
+          <img src="img/captura.jpg" alt="Captura del menú principal de Sheriff Tornillo con el robot corriendo por el desierto" width="1919" height="1079" data-bs-toggle="modal" data-bs-target="#modalCaptura">
+          <span class="zoom"><i class="bi bi-arrows-fullscreen me-1"></i>Ampliar</span>
+          <div class="sello">Hecho en Unity 6</div>
+        </div>
+      </div>
     </div>
   </div>
-  <a href="#historia" class="scroll-ind" aria-label="Bajar a la historia">BAJA</a>
-</section>
+  <a href="#historia" class="scroll-ind" aria-label="Bajar"><i class="bi bi-chevron-double-down"></i></a>
+</header>
+
+<!-- Cinta -->
+<div class="cinta" aria-hidden="true">
+  <div class="cinta-pista">
+    <span>Salta los cactus</span><span>Deslízate bajo los buitres</span><span>Recupera el oro</span><span>3 sombreros</span><span>1000 puntos</span><span>Hasta el atardecer</span>
+    <span>Salta los cactus</span><span>Deslízate bajo los buitres</span><span>Recupera el oro</span><span>3 sombreros</span><span>1000 puntos</span><span>Hasta el atardecer</span>
+  </div>
+</div>
 
 <!-- ================= 3. HISTORIA ================= -->
-<section class="papel" id="historia">
-  <svg class="borde-roto-arriba" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
-  <div class="contenedor">
-    <div class="cabecera rv">
-      <div class="num">CAPÍTULO I</div>
+<section class="seccion papel" id="historia">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-book"></i>CAPÍTULO I · HISTORIA</span>
       <h2>La gran fuga del oro</h2>
       <p>Una persecución a toda máquina por el desierto, desde la tarde hasta la puesta del sol.</p>
-      <div class="separador">✦</div>
     </div>
 
-    <div class="historia-grid">
-      <div>
-        <article class="capitulo rv">
-          <span class="pin"></span>
-          <h3>El mundo: un desierto de tuercas y polvo</h3>
-          <p>En un rincón olvidado del Lejano Oeste, los pueblos ya no los cuidan vaqueros de carne y hueso, sino autómatas de metal. Entre mesas rojizas, cactus y buitres que vuelan en círculo, el oro es lo que mantiene viva a la comunidad: con él se pagan las reparaciones, el aceite y el pan.</p>
-          <p>El juego transcurre en una sola carrera interminable por ese desierto, bajo un cielo que va de la tarde dorada al atardecer encendido.</p>
-        </article>
-        <article class="capitulo rv d1">
-          <span class="pin"></span>
-          <h3>El conflicto: los Hermanos Óxido</h3>
-          <p>Una mañana, la temida banda de los <b>Hermanos Óxido</b>, robots forajidos corroídos por los años y la codicia, asalta el banco y escapa a todo galope con el oro del pueblo. A su paso dejan una trampa tras otra: barriles de TNT, cactus en medio del camino y carteles de <em>SE BUSCA</em> clavados a la altura de la cabeza.</p>
-        </article>
-        <article class="capitulo rv d2">
-          <span class="pin"></span>
-          <h3>El arco: correr hasta el atardecer</h3>
-          <p>El <b>Sheriff Tornillo</b> no tiene caballo, pero tiene algo mejor: piernas de acero que nunca se cansan. Sale tras la banda y su misión es clara: <b>recuperar el oro moneda por moneda</b> y acumular <b>1000 puntos</b> antes de quedarse sin sombreros. Cada segundo que aguanta lo acerca a los forajidos; cada moneda recuperada es una victoria para el pueblo.</p>
-          <p>Cuanto más se acerca a la meta, más rápido corre y más se tiñe de rojo el cielo. Al cruzar la línea, el pueblo celebra con confeti y fanfarria… pero un buen sheriff siempre puede seguir corriendo por el récord.</p>
-        </article>
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-6">
+        <div class="linea-tiempo">
+          <article class="hito" data-aos="fade-right">
+            <span class="marca-hito"><i class="bi bi-geo-alt-fill"></i></span>
+            <span class="etapa">EL MUNDO</span>
+            <h3>Un desierto de tuercas y polvo</h3>
+            <p>En un rincón olvidado del Lejano Oeste, los pueblos ya no los cuidan vaqueros de carne y hueso, sino robots de metal. Entre mesas rojizas, cactus y buitres que vuelan en círculo, el oro es lo que mantiene viva a la comunidad.</p>
+            <p>Todo el juego es una sola carrera interminable por ese desierto, bajo un cielo que pasa de la tarde dorada al atardecer encendido.</p>
+          </article>
+          <article class="hito" data-aos="fade-right" data-aos-delay="100">
+            <span class="marca-hito"><i class="bi bi-exclamation-triangle-fill"></i></span>
+            <span class="etapa">EL CONFLICTO</span>
+            <h3>El asalto de los Hermanos Óxido</h3>
+            <p>La temida banda de los <b>Hermanos Óxido</b>, robots forajidos corroídos por los años y la codicia, asalta el pueblo y escapa con todo el oro. A su paso dejan una trampa tras otra: barriles de TNT, cactus en pleno camino y carteles de <em>SE BUSCA</em> a la altura de la cabeza.</p>
+          </article>
+          <article class="hito" data-aos="fade-right" data-aos-delay="200">
+            <span class="marca-hito"><i class="bi bi-flag-fill"></i></span>
+            <span class="etapa">LA MISIÓN</span>
+            <h3>Correr hasta el atardecer</h3>
+            <p>El <b>Sheriff Tornillo</b> no tiene caballo, pero tiene piernas de acero que nunca se cansan. Su misión es <b>recuperar el oro moneda por moneda</b> y llegar a <b>1000 puntos</b> antes de quedarse sin sombreros. Cuanto más se acerca a la meta, más rápido corre y más se tiñe de rojo el cielo.</p>
+            <p class="mb-0">Al cruzar la meta, el pueblo lo celebra con confeti y fanfarria… pero un buen sheriff siempre puede seguir corriendo por el récord.</p>
+          </article>
+        </div>
       </div>
 
-      <div class="carteles">
-        <div class="cartel rv"><div class="se">SE BUSCA</div><div class="cara"><svg viewBox="0 0 100 100"><use href="#oxido"/></svg></div><div class="nom">Óxido Mayor</div><div class="rec">Recompensa: 500 🪙</div></div>
-        <div class="cartel rv d1"><div class="se">SE BUSCA</div><div class="cara"><svg viewBox="0 0 100 100" style="transform:scaleX(-1)"><use href="#oxido"/></svg></div><div class="nom">Óxido Menor</div><div class="rec">Recompensa: 300 🪙</div></div>
-        <div class="cartel rv d2"><div class="se">SE BUSCA</div><div class="cara"><svg viewBox="0 0 100 100" style="filter:hue-rotate(20deg) saturate(.8)"><use href="#oxido"/></svg></div><div class="nom">Óxido el Flaco</div><div class="rec">Recompensa: 200 🪙</div></div>
-        <div class="cartel premio rv d3"><div class="se">EL BOTÍN</div><div class="cara"><svg viewBox="0 0 30 30" style="height:70px"><use href="#moneda"/></svg></div><div class="nom">El oro del pueblo</div><div class="rec">¡Recupéralo todo!</div></div>
+      <div class="col-lg-6">
+        <p class="text-center small fw-bold mb-3" style="color:#8b5a2b"><i class="bi bi-hand-index"></i> Pasa el cursor o toca un cartel para darle la vuelta</p>
+        <div class="row g-4">
+          <div class="col-6" data-aos="flip-left"><div class="cartel rot-1" tabindex="0"><div class="cartel-in">
+            <div class="cartel-cara"><div class="se">SE BUSCA</div><div class="cara"><svg viewBox="0 0 100 100"><use href="#oxido"/></svg></div><div class="nom">Óxido Mayor</div><div class="rec">Recompensa: 500 🪙</div></div>
+            <div class="cartel-cara atras"><h4>El cabecilla</h4><p>Planeó el asalto y lleva la bolsa más pesada. Va siempre al frente de la banda.</p></div>
+          </div></div></div>
+          <div class="col-6 mt-5" data-aos="flip-left" data-aos-delay="100"><div class="cartel rot-2" tabindex="0"><div class="cartel-in">
+            <div class="cartel-cara"><div class="se">SE BUSCA</div><div class="cara"><svg viewBox="0 0 100 100" style="transform:scaleX(-1)"><use href="#oxido"/></svg></div><div class="nom">Óxido Menor</div><div class="rec">Recompensa: 300 🪙</div></div>
+            <div class="cartel-cara atras"><h4>El de las trampas</h4><p>Va soltando barriles de TNT por el camino para frenar al sheriff.</p></div>
+          </div></div></div>
+          <div class="col-6 mt-n4" data-aos="flip-left" data-aos-delay="200"><div class="cartel rot-3" tabindex="0"><div class="cartel-in">
+            <div class="cartel-cara"><div class="se">SE BUSCA</div><div class="cara"><svg viewBox="0 0 100 100" style="filter:hue-rotate(25deg) saturate(.8)"><use href="#oxido"/></svg></div><div class="nom">Óxido el Flaco</div><div class="rec">Recompensa: 200 🪙</div></div>
+            <div class="cartel-cara atras"><h4>El vigía</h4><p>Clava carteles de SE BUSCA a la altura de la cabeza. ¡Deslízate!</p></div>
+          </div></div></div>
+          <div class="col-6" data-aos="flip-left" data-aos-delay="300"><div class="cartel" tabindex="0"><div class="cartel-in">
+            <div class="cartel-cara" style="background:var(--st-guindo);border-color:#4a0d26"><div class="se" style="color:var(--st-oro)">EL BOTÍN</div><div class="cara"><svg viewBox="0 0 30 30" style="height:80px"><use href="#moneda"/></svg></div><div class="nom" style="color:var(--st-oro)">El oro del pueblo</div><div class="rec" style="color:var(--st-arena)">¡Recupéralo todo!</div></div>
+            <div class="cartel-cara atras" style="background:var(--st-oro);color:var(--st-tinta)"><h4 style="color:var(--st-guindo)">+50 por moneda</h4><p>Cada moneda lleva grabada la “U” de Univalle.</p></div>
+          </div></div></div>
+        </div>
       </div>
     </div>
   </div>
-  <svg class="borde-roto-abajo" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
+  <svg class="borde-roto abajo" viewBox="0 0 1440 38" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
 </section>
 
 <!-- ================= 4. PERSONAJE ================= -->
-<section class="personaje" id="personaje">
-  <div class="contenedor">
-    <div class="cabecera rv">
-      <div class="num">CAPÍTULO II</div>
+<section class="seccion personaje" id="personaje">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-person-badge"></i>CAPÍTULO II · PERSONAJE</span>
       <h2>El Sheriff Tornillo</h2>
       <p>El último robot vaquero que todavía cree en la ley del Oeste.</p>
-      <div class="separador">✦</div>
     </div>
 
-    <div class="pj-grid">
-      <div class="pj-visual rv">
-        <div class="aro"></div><div class="aro2"></div>
-        <svg class="robot-grande flotar" viewBox="0 0 200 260" role="img" aria-label="Ilustración del Sheriff Tornillo"><use href="#robot"/></svg>
-        <div class="chip c1">⭐ Placa de <b>sheriff</b></div>
-        <div class="chip c2">🎩 Sombrero <b>guindo</b></div>
-        <div class="chip c3">⚙️ Cuerpo de <b>acero</b></div>
+    <div class="row g-5 align-items-center">
+      <div class="col-lg-5" data-aos="fade-right">
+        <div class="foto-pj">
+          <div class="marco">
+            <img src="img/personaje.jpg" alt="Modelo 3D del Sheriff Tornillo: robot cilíndrico con sombrero y poncho guindo" width="600" height="660" loading="lazy">
+            <div class="nombre">Sheriff Tornillo</div>
+          </div>
+          <div class="chip c1">🤠 Sombrero <b>guindo</b></div>
+          <div class="chip c2">🧣 Poncho con <b>franjas</b></div>
+          <div class="chip c3">⚙️ Cuerpo de <b>acero</b></div>
+        </div>
       </div>
 
-      <div class="pj-info rv d1">
-        <h3>Sheriff Tornillo</h3>
-        <div class="alias">ROBOT VAQUERO · PROTAGONISTA</div>
-        <p>Un autómata de metal pulido con alma de vaquero. Es la ley del pueblo y lo único que se interpone entre los Hermanos Óxido y el oro de sus vecinos. No dispara: <b>corre, salta y se desliza</b> con una precisión mecánica, y no se rinde mientras le quede un sombrero puesto.</p>
+      <div class="col-lg-7" data-aos="fade-left">
+        <span class="badge-st mb-2 d-inline-block">PROTAGONISTA · ROBOT VAQUERO</span>
+        <h3 class="font-rye text-oro display-6 mb-3">La ley tiene piernas de acero</h3>
+        <p class="text-suave fs-5">Un robot de cuerpo cilíndrico, con brazos y piernas articulados, que lleva con orgullo un <b class="text-white">sombrero guindo</b> y un <b class="text-white">poncho con franjas blancas</b>. Es la ley del pueblo y lo único que se interpone entre los Hermanos Óxido y el oro de sus vecinos. No dispara: <b class="text-white">corre, salta y se desliza</b>, y no se rinde mientras le quede un sombrero.</p>
 
-        <div class="ficha">
-          <div><small>Rol</small><b>Sheriff y perseguidor</b></div>
-          <div><small>Velocidad</small><b>10 → 24 m/s</b></div>
-          <div><small>Resistencia</small><b>3 sombreros</b></div>
-        </div>
-
-        <div class="habilidades">
-          <div class="hab"><div class="i">🦘</div><div><h4>Salto de resorte</h4><p>Supera cactus y barriles de TNT, y atrapa las monedas en arco.</p><div class="barra"><i style="--v:85%"></i></div></div></div>
-          <div class="hab"><div class="i">🛷</div><div><h4>Deslizamiento</h4><p>Pasa bajo carteles y buitres. En el aire, lo hace caer en picada.</p><div class="barra"><i style="--v:75%"></i></div></div></div>
-          <div class="hab"><div class="i">🛡️</div><div><h4>Blindaje temporal</h4><p>Tras un choque: chispas, sacudida y 1,5 s de invencibilidad.</p><div class="barra"><i style="--v:60%"></i></div></div></div>
-          <div class="hab"><div class="i">🎨</div><div><h4>Pintura personalizable</h4><p>Cambia el color de su carrocería en plena carrera con la tecla C.</p><div class="barra"><i style="--v:95%"></i></div></div></div>
+        <ul class="nav nav-pills nav-pills-st mt-4 mb-4" role="tablist">
+          <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tabHab" type="button" role="tab"><i class="bi bi-lightning-charge-fill me-1"></i>Habilidades</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabRasgos" type="button" role="tab"><i class="bi bi-palette-fill me-1"></i>Rasgos</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabFicha" type="button" role="tab"><i class="bi bi-card-list me-1"></i>Ficha</button></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="tabHab" role="tabpanel">
+            <div class="habilidad"><div class="d-flex justify-content-between"><b>🦘 Salto de resorte</b><small>Cactus, TNT y monedas en arco</small></div><div class="progress mt-2"><div class="progress-bar" data-valor="85"></div></div></div>
+            <div class="habilidad"><div class="d-flex justify-content-between"><b>🛷 Deslizamiento</b><small>En el aire: caída rápida</small></div><div class="progress mt-2"><div class="progress-bar" data-valor="78"></div></div></div>
+            <div class="habilidad"><div class="d-flex justify-content-between"><b>🛡️ Blindaje temporal</b><small>1,5 s de invencibilidad</small></div><div class="progress mt-2"><div class="progress-bar" data-valor="60"></div></div></div>
+            <div class="habilidad mb-0"><div class="d-flex justify-content-between"><b>💨 Velocidad</b><small>De 10 a 24 m/s</small></div><div class="progress mt-2"><div class="progress-bar" data-valor="100"></div></div></div>
+          </div>
+          <div class="tab-pane fade" id="tabRasgos" role="tabpanel">
+            <div class="row g-3">
+              <div class="col-sm-6"><div class="rasgo"><i class="bi bi-cpu"></i><h5>Cuerpo cilíndrico</h5><p>Chasis de acero azulado con brazos y piernas articulados.</p></div></div>
+              <div class="col-sm-6"><div class="rasgo"><i class="bi bi-brush"></i><h5>Pintura personalizable</h5><p>Cambia de color en plena carrera con la tecla <b>C</b>.</p></div></div>
+              <div class="col-sm-6"><div class="rasgo"><i class="bi bi-emoji-laughing"></i><h5>Celebra a lo grande</h5><p>Al llegar a la meta brinca de alegría entre confeti.</p></div></div>
+              <div class="col-sm-6"><div class="rasgo"><i class="bi bi-wind"></i><h5>Sombrero volador</h5><p>Al perder la última vida, el sombrero sale volando.</p></div></div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="tabFicha" role="tabpanel">
+            <table class="table tabla-st">
+              <tbody>
+                <tr><th>Nombre</th><td>Sheriff Tornillo</td></tr>
+                <tr><th>Rol</th><td>Sheriff y perseguidor</td></tr>
+                <tr><th>Enemigos</th><td>Los Hermanos Óxido</td></tr>
+                <tr><th>Vidas</th><td>3 sombreros</td></tr>
+                <tr><th>Velocidad</th><td>10 → 24 m/s (36 → 86 km/h)</td></tr>
+                <tr><th>Cámaras</th><td>Lateral o desde atrás (tecla V)</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -653,488 +280,355 @@ footer{background:#120910;padding:56px 0 30px;border-top:4px solid var(--guindo)
 </section>
 
 <!-- ================= 5. MECÁNICAS ================= -->
-<section class="papel" id="mecanicas">
-  <svg class="borde-roto-arriba" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
-  <div class="contenedor">
-    <div class="cabecera rv">
-      <div class="num">CAPÍTULO III</div>
-      <h2>Mecánicas y controles</h2>
-      <p>Fácil de aprender, difícil de dominar. Pulsa las teclas y mira cómo se iluminan.</p>
-      <div class="separador">✦</div>
+<section class="seccion papel" id="mecanicas">
+  <svg class="borde-roto arriba" viewBox="0 0 1440 38" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-controller"></i>CAPÍTULO III · MECÁNICAS</span>
+      <h2>Cómo se juega</h2>
+      <p>Fácil de aprender, difícil de dominar. Pulsa las teclas en tu teclado y mira cómo se iluminan.</p>
     </div>
 
-    <div class="mec-grid">
-      <div class="tarjeta rv">
-        <h3>⌨️ Esquema de control</h3>
-        <div class="controles">
-          <div class="control"><div class="teclas"><span class="k" data-k="ArrowUp">↑</span><span class="k" data-k=" ">Espacio</span><span class="k" data-k="w">W</span></div><span><b>Saltar</b> sobre obstáculos bajos</span></div>
-          <div class="control"><div class="teclas"><span class="k" data-k="ArrowDown">↓</span><span class="k" data-k="s">S</span></div><span><b>Deslizarse</b> (en el aire: caída rápida)</span></div>
-          <div class="control"><div class="teclas"><span class="k" data-k="Escape">Esc</span><span class="k" data-k="p">P</span></div><span><b>Pausa</b> con menú</span></div>
-          <div class="control"><div class="teclas"><span class="k" data-k="r">R</span></div><span><b>Reiniciar</b> la carrera</span></div>
-          <div class="control"><div class="teclas"><span class="k" data-k="Enter">Enter</span></div><span><b>Jugar</b> / seguir tras la meta</span></div>
-          <div class="control"><div class="teclas"><span class="k" data-k="c">C</span><span class="k" data-k="x">X</span></div><span>Color del <b>robot</b> / de los <b>obstáculos</b></span></div>
-          <div class="control"><div class="teclas"><span class="k" data-k="v">V</span></div><span><b>Cámara</b> lateral o desde atrás</span></div>
-          <div class="control"><div class="teclas"><span class="k">🖱️ Ratón</span></div><span>Navegar por <b>todos los menús</b></span></div>
+    <ul class="nav nav-pills nav-pills-st justify-content-center mb-4" role="tablist" data-aos="fade-up">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#tabControles" type="button" role="tab"><i class="bi bi-keyboard me-1"></i>Controles</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabReglas" type="button" role="tab"><i class="bi bi-journal-text me-1"></i>Reglas</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabObstaculos" type="button" role="tab"><i class="bi bi-cone-striped me-1"></i>Obstáculos</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#tabFin" type="button" role="tab"><i class="bi bi-flag me-1"></i>Victoria y derrota</button></li>
+    </ul>
+
+    <div class="tab-content" data-aos="fade-up">
+      <!-- Controles -->
+      <div class="tab-pane fade show active" id="tabControles" role="tabpanel">
+        <div class="tarjeta">
+          <div class="teclado-wrap mx-auto" style="max-width:640px">
+            <div class="teclado" id="teclado">
+              <div class="fila"><span class="tecla usada" data-k="Escape" title="Pausa">Esc</span><span class="tecla">Q</span><span class="tecla usada" data-k="w" title="Saltar">W</span><span class="tecla">E</span><span class="tecla usada" data-k="r" title="Reiniciar">R</span><span class="tecla">T</span><span class="tecla">Y</span><span class="tecla">U</span><span class="tecla">I</span><span class="tecla">O</span><span class="tecla usada" data-k="p" title="Pausa">P</span></div>
+              <div class="fila"><span class="tecla">A</span><span class="tecla usada" data-k="s" title="Deslizarse">S</span><span class="tecla">D</span><span class="tecla">F</span><span class="tecla">G</span><span class="tecla">H</span><span class="tecla">J</span><span class="tecla">K</span><span class="tecla">L</span><span class="tecla usada ancha" data-k="Enter" title="Jugar / seguir tras la meta">Enter</span></div>
+              <div class="fila"><span class="tecla ancha">Shift</span><span class="tecla">Z</span><span class="tecla usada" data-k="x" title="Color de obstáculos">X</span><span class="tecla usada" data-k="c" title="Color del robot">C</span><span class="tecla usada" data-k="v" title="Cambiar cámara">V</span><span class="tecla">B</span><span class="tecla">N</span><span class="tecla">M</span><span class="tecla usada" data-k="ArrowUp" title="Saltar">↑</span></div>
+              <div class="fila"><span class="tecla usada espacio" data-k=" " title="Saltar">Espacio</span><span class="tecla">←</span><span class="tecla usada" data-k="ArrowDown" title="Deslizarse">↓</span><span class="tecla">→</span></div>
+            </div>
+          </div>
+          <div class="leyenda-teclas">
+            <div><span class="tecla">↑</span><span class="tecla">W</span><span class="tecla">␣</span> <span><b>Saltar</b></span></div>
+            <div><span class="tecla">↓</span><span class="tecla">S</span> <span><b>Deslizarse</b> · en el aire, cae rápido</span></div>
+            <div><span class="tecla">Esc</span><span class="tecla">P</span> <span><b>Pausa</b> con menú</span></div>
+            <div><span class="tecla">R</span> <span><b>Reiniciar</b> la carrera</span></div>
+            <div><span class="tecla">Enter</span> <span><b>Jugar</b> / seguir tras la meta</span></div>
+            <div><span class="tecla">C</span><span class="tecla">X</span> <span>Color de <b>robot</b> / <b>obstáculos</b></span></div>
+            <div><span class="tecla">V</span> <span><b>Cámara</b> lateral o trasera</span></div>
+            <div><span class="tecla"><i class="bi bi-mouse"></i></span> <span><b>Ratón</b> en todos los menús</span></div>
+          </div>
         </div>
       </div>
 
-      <div class="tarjeta rv d1">
-        <h3>📜 Reglas del juego</h3>
-        <div class="reglas">
-          <div class="regla"><div class="e">⏱️</div><div><h4>Sobrevive</h4><p>Ganas <b>+10 puntos por segundo</b> que sigues corriendo.</p></div></div>
-          <div class="regla"><div class="e"><svg viewBox="0 0 30 30" width="28"><use href="#moneda"/></svg></div><div><h4>Recoge el oro</h4><p>Cada moneda da <b>+50 puntos</b>. Aparecen en arco sobre los obstáculos bajos, al ras del suelo bajo los altos y en filas. Si las encadenas, el sonido sube de tono.</p></div></div>
-          <div class="regla"><div class="e">🎩</div><div><h4>Cuida tus sombreros</h4><p>Empiezas con <b>3 vidas</b>. Cada choque te quita una y te da 1,5 s de invencibilidad.</p></div></div>
-          <div class="regla"><div class="e">🌅</div><div><h4>Cada vez más rápido</h4><p>La velocidad sube de <b>10 a 24 m/s</b> y el cielo pasa de la tarde al atardecer mientras te acercas a la meta.</p></div></div>
-        </div>
-        <div class="fin">
-          <div class="gana"><h4>🏆 Victoria</h4><p>Llega a <b>1000 puntos</b>. Confeti, fanfarria y un robot que brinca de alegría. Pulsa Enter para seguir por el récord.</p></div>
-          <div class="pierde"><h4>💀 Derrota</h4><p>Pierdes los 3 sombreros. El tuyo sale volando y ves tus estadísticas. Pulsa Reintentar.</p></div>
-        </div>
-      </div>
-
-      <div class="tarjeta mec-full rv">
-        <h3>🌵 Obstáculos</h3>
-        <div class="obstaculos">
-          <div class="obs"><h4>Obstáculos bajos</h4><span class="accion">↑ SALTA</span><ul><li>Cactus</li><li>Barril de TNT</li></ul></div>
-          <div class="obs"><h4>Obstáculos altos</h4><span class="accion">↓ DESLÍZATE</span><ul><li>Cartel de SE BUSCA</li><li>Buitre (vuela hacia ti)</li></ul></div>
+      <!-- Reglas -->
+      <div class="tab-pane fade" id="tabReglas" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-lg-6"><div class="tarjeta">
+            <h3><i class="bi bi-coin me-2"></i>Puntuación</h3>
+            <div class="regla"><div class="ic"><i class="bi bi-stopwatch"></i></div><div><h4>Sobrevive</h4><p><b>+10 puntos por segundo</b> que sigues corriendo.</p></div></div>
+            <div class="regla"><div class="ic"><svg viewBox="0 0 30 30" width="28"><use href="#moneda"/></svg></div><div><h4>Monedas de oro · +50</h4><p>En arco sobre los obstáculos bajos (hay que saltar), al ras del suelo bajo los altos (hay que deslizarse) y en filas. Si las encadenas, cada una suena más aguda.</p></div></div>
+            <div class="regla"><div class="ic"><i class="bi bi-stars"></i></div><div><h4>Estrellas</h4><p>★ con 300 pts · ★★ con 600 · ★★★ con 1000. El récord y las mejores estrellas se guardan.</p></div></div>
+          </div></div>
+          <div class="col-lg-6"><div class="tarjeta">
+            <h3><i class="bi bi-heart-pulse me-2"></i>Vidas y dificultad</h3>
+            <div class="regla"><div class="ic"><i class="bi bi-heart-fill"></i></div><div><h4>3 sombreros</h4><p>Cada choque quita una vida y provoca sacudida, chispas, un destello rojo y <b>1,5 s de invencibilidad</b>.</p></div></div>
+            <div class="regla"><div class="ic"><i class="bi bi-speedometer2"></i></div><div><h4>Cada vez más rápido</h4><p>La velocidad sube de <b>10 a 24 m/s</b> a lo largo de la carrera.</p></div></div>
+            <div class="regla"><div class="ic"><i class="bi bi-sunset-fill"></i></div><div><h4>El cielo marca el avance</h4><p>Pasa de la tarde al atardecer a medida que te acercas a la meta.</p></div></div>
+          </div></div>
         </div>
       </div>
 
-      <div class="tarjeta demo mec-full rv" id="demo">
-        <div class="demo-top">
-          <h3>🎮 Calienta motores</h3>
-          <p>Mini demo web: <b>↑ / Espacio</b> saltar · <b>↓</b> deslizarse · toca la pantalla en el celular</p>
+      <!-- Obstáculos -->
+      <div class="tab-pane fade" id="tabObstaculos" role="tabpanel">
+        <div class="row g-4 row-cols-2 row-cols-lg-4">
+          <div class="col"><div class="obs-card"><svg viewBox="0 0 80 100"><use href="#cactus"/></svg><h4>Cactus</h4><span class="badge badge-st mt-2"><i class="bi bi-arrow-up"></i> SALTA</span><p>Obstáculo bajo, aparece con frecuencia.</p></div></div>
+          <div class="col"><div class="obs-card"><svg viewBox="0 0 80 100"><use href="#tnt"/></svg><h4>Barril de TNT</h4><span class="badge badge-st mt-2"><i class="bi bi-arrow-up"></i> SALTA</span><p>Obstáculo bajo, regalo de los Óxido.</p></div></div>
+          <div class="col"><div class="obs-card"><svg viewBox="0 0 90 100"><use href="#cartelSB"/></svg><h4>Cartel SE BUSCA</h4><span class="badge badge-st mt-2"><i class="bi bi-arrow-down"></i> DESLÍZATE</span><p>Obstáculo alto, a la altura de la cabeza.</p></div></div>
+          <div class="col"><div class="obs-card"><svg viewBox="0 0 100 70"><use href="#buitre"/></svg><h4>Buitre</h4><span class="badge badge-st mt-2"><i class="bi bi-arrow-down"></i> DESLÍZATE</span><p>Obstáculo alto que además vuela hacia ti.</p></div></div>
         </div>
-        <div class="lienzo-wrap"><canvas id="mini" aria-label="Mini demo jugable del Sheriff Tornillo"></canvas></div>
-        <div class="demo-btns">
-          <button id="bSalta" aria-label="Saltar">↑ Saltar</button>
-          <button id="bDesliza" aria-label="Deslizarse">↓ Deslizar</button>
+      </div>
+
+      <!-- Victoria y derrota -->
+      <div class="tab-pane fade" id="tabFin" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-md-6"><div class="estado-fin gana"><h4><i class="bi bi-trophy-fill text-warning me-2"></i>Victoria</h4><p>Llega a <b>1000 puntos</b>: confeti, fanfarria y un robot que brinca de alegría. Pulsa <b>Enter</b> para seguir corriendo por el récord.</p></div></div>
+          <div class="col-md-6"><div class="estado-fin pierde"><h4><i class="bi bi-heartbreak-fill text-danger me-2"></i>Derrota</h4><p>Pierdes los 3 sombreros: animación de caída, el sombrero sale volando y aparecen tus estadísticas (puntos, monedas, tiempo, distancia, esquivados y récord). Pulsa <b>Reintentar</b>.</p></div></div>
         </div>
+      </div>
+    </div>
+
+    <!-- Mini demo -->
+    <div class="demo mt-5" id="demo" data-aos="fade-up">
+      <div class="demo-cab d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h3><i class="bi bi-joystick me-2"></i>Calienta motores</h3>
+        <p>Mini demo web · <b class="text-white">↑ / Espacio</b> saltar · <b class="text-white">↓</b> deslizarse · en el celular toca arriba o abajo</p>
+      </div>
+      <div class="lienzo-wrap"><canvas id="mini" aria-label="Mini demo jugable del Sheriff Tornillo"></canvas></div>
+      <div class="demo-pie">
+        <button class="btn btn-st btn-st-pizarra btn-st-sm" id="bSalta"><i class="bi bi-arrow-up"></i> Saltar</button>
+        <span class="demo-record">Récord: <b id="record">0</b> pts</span>
+        <button class="btn btn-st btn-st-pizarra btn-st-sm" id="bDesliza"><i class="bi bi-arrow-down"></i> Deslizar</button>
       </div>
     </div>
   </div>
-  <svg class="borde-roto-abajo" viewBox="0 0 1440 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
+  <svg class="borde-roto abajo" viewBox="0 0 1440 38" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
 </section>
 
 <!-- ================= 6. DATOS ================= -->
-<section class="datos" id="datos">
-  <div class="contenedor">
-    <div class="cabecera rv">
-      <div class="num">CAPÍTULO IV</div>
-      <h2>Datos del proyecto</h2>
-      <p>Los números que hay detrás de cada carrera.</p>
-      <div class="separador">✦</div>
+<section class="seccion datos" id="datos">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-bar-chart-fill"></i>CAPÍTULO IV · DATOS</span>
+      <h2>El proyecto en números</h2>
+      <p>Las cifras que hay detrás de cada carrera.</p>
     </div>
 
-    <div class="kpis">
-      <div class="kpi rv"><div class="ico">🎯</div><b data-cuenta="1000">0</b><h4>Puntuación objetivo</h4><p>Meta para ganar la partida.</p></div>
-      <div class="kpi rv d1"><div class="ico">🎩</div><b data-cuenta="3">0</b><h4>Vidas iniciales</h4><p>Con 1,5 s de invencibilidad tras cada golpe.</p></div>
-      <div class="kpi rv d2"><div class="ico">💨</div><b data-cuenta="24">0<sup>m/s</sup></b><h4>Velocidad máxima</h4><p>Partiendo de 10 m/s.</p></div>
-      <div class="kpi rv d3"><div class="ico">🎛️</div><b data-cuenta="240" data-pre="~">0</b><h4>Parámetros editables</h4><p>Todo se ajusta desde el Inspector de Unity.</p></div>
+    <div class="row g-3 g-lg-4">
+      <div class="col-6 col-lg-3" data-aos="fade-up"><div class="kpi"><i class="bi bi-bullseye"></i><div class="num" data-cuenta="1000">0</div><h4>Puntuación objetivo</h4><p>Meta para ganar la partida.</p></div></div>
+      <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="100"><div class="kpi"><i class="bi bi-heart-fill"></i><div class="num" data-cuenta="3">0</div><h4>Vidas iniciales</h4><p>Con 1,5 s de invencibilidad tras cada golpe.</p></div></div>
+      <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="200"><div class="kpi"><i class="bi bi-speedometer"></i><div class="num"><span data-cuenta="24">0</span><small>m/s</small></div><h4>Velocidad máxima</h4><p>Empieza en 10 m/s.</p></div></div>
+      <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="300"><div class="kpi"><i class="bi bi-sliders"></i><div class="num">~<span data-cuenta="240">0</span></div><h4>Parámetros editables</h4><p>Ajustables desde el Inspector de Unity.</p></div></div>
     </div>
 
-    <div class="info-grid">
-      <div class="panel rv">
-        <h3>⭐ Ruta de estrellas</h3>
-        <p>El récord y las mejores estrellas se guardan entre partidas.</p>
-        <div class="ruta">
-          <div class="rel"></div>
-          <div class="hito" style="left:0%"><div class="pt">🏁</div><div class="abajo">0</div></div>
-          <div class="hito" style="left:30%"><div class="arriba">★</div><div class="pt"></div><div class="abajo">300 pts</div></div>
-          <div class="hito" style="left:60%"><div class="arriba">★★</div><div class="pt"></div><div class="abajo">600 pts</div></div>
-          <div class="hito" style="left:100%"><div class="arriba">★★★</div><div class="pt">🏆</div><div class="abajo">1000 pts</div></div>
+    <div class="row g-3 g-lg-4 mt-1">
+      <div class="col-lg-7" data-aos="fade-up">
+        <div class="panel">
+          <h3><i class="bi bi-stars me-2"></i>Puntos necesarios por estrella</h3>
+          <p class="sub">Umbrales de estrellas y valor de cada acción.</p>
+          <div class="grafica"><canvas id="grafEstrellas" aria-label="Gráfica de puntos por estrella"></canvas></div>
         </div>
-        <h3 style="font-size:1.1rem;margin-top:10px">💨 Curva de velocidad</h3>
-        <div class="vel" id="vel"></div>
-        <div class="vel-eje"><span>Inicio · 10 m/s</span><span>Atardecer · 24 m/s</span></div>
+      </div>
+      <div class="col-lg-5" data-aos="fade-up" data-aos-delay="100">
+        <div class="panel">
+          <h3><i class="bi bi-speedometer2 me-2"></i>Velocímetro</h3>
+          <p class="sub">Rango de velocidad del sheriff durante la carrera.</p>
+          <div class="velocimetro">
+            <canvas id="grafVelocidad" width="260" height="160" aria-label="Velocímetro de 10 a 24 metros por segundo"></canvas>
+            <div class="lectura"><b id="lecturaVel">10</b><small>m/s · <span id="lecturaKmh">36</span> km/h</small></div>
+          </div>
+          <input type="range" class="form-range mt-3" id="sliderVel" min="10" max="24" step="1" value="10" aria-label="Probar velocidad">
+          <div class="d-flex justify-content-between small text-suave"><span>Inicio · 10 m/s</span><span>Máxima · 24 m/s</span></div>
+        </div>
       </div>
 
-      <div class="panel rv d1">
-        <h3>🪙 ¿De dónde salen los puntos?</h3>
-        <p>Valor de cada acción en la partida.</p>
-        <div class="fuentes">
-          <div class="fuente"><span>Moneda de oro</span><em>+50</em><div class="barra"><i style="--v:100%"></i></div></div>
-          <div class="fuente"><span>Segundo sobrevivido</span><em>+10</em><div class="barra"><i style="--v:20%"></i></div></div>
-          <div class="fuente"><span>Choque</span><em>−1 🎩</em><div class="barra"><i style="--v:33%;background:linear-gradient(90deg,#9e2a36,#e8743b)"></i></div></div>
+      <div class="col-12" data-aos="fade-up">
+        <div class="panel calc">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-5">
+              <h3><i class="bi bi-calculator me-2"></i>Calculadora del sheriff</h3>
+              <p class="sub mb-0">¿Cuánto tardarías en llegar a 1000 puntos? Los puntos salen de <b class="text-white">10 por segundo + 50 por moneda</b>. Mueve el control y descúbrelo.</p>
+            </div>
+            <div class="col-lg-4">
+              <label for="sliderMonedas" class="form-label fw-bold">Monedas por minuto: <span id="valMonedas" class="text-oro">6</span></label>
+              <input type="range" class="form-range" id="sliderMonedas" min="0" max="30" value="6">
+              <label for="sliderTiempo" class="form-label fw-bold mt-2">Tiempo corriendo: <span id="valTiempo" class="text-oro">60</span> s</label>
+              <input type="range" class="form-range" id="sliderTiempo" min="10" max="180" step="5" value="60">
+            </div>
+            <div class="col-lg-3">
+              <div class="resultado text-center">
+                <small class="text-suave d-block">Para 1000 pts necesitas</small>
+                <output id="resMeta">1 min 15 s</output>
+                <hr class="my-2 opacity-25">
+                <small class="text-suave d-block">En el tiempo elegido harías</small>
+                <b class="fs-4 text-white" id="resPuntos">900 pts</b>
+                <div class="estrellas-calc mt-1" id="resEstrellas"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <h3 style="font-size:1.1rem;margin-top:22px">📊 Estadísticas al terminar</h3>
-        <p style="margin-bottom:0">Puntos, monedas, tiempo, distancia recorrida, obstáculos esquivados y récord.</p>
       </div>
-    </div>
 
-    <div class="tec">
-      <div class="rv"><b>🛠️ Unity 6</b><p>Compatible con Built-in y URP, y con el Input System viejo y el nuevo.</p></div>
-      <div class="rv d1"><b>🎵 Audio por código</b><p>Melodía western original (silbada en el menú, armónica en la partida), sintetizada al iniciar.</p></div>
-      <div class="rv d2"><b>✨ Efectos procedurales</b><p>Cielo con degradado, sol poniente, nubes, polvo, chispas, brillo y confeti.</p></div>
-      <div class="rv d3"><b>🖥️ Interfaz responsiva</b><p>Diseñada en 1920×1080; se adapta a 16:9, 16:10, 4:3 y ultrawide.</p></div>
+      <div class="col-lg-6" data-aos="fade-up">
+        <div class="panel">
+          <h3><i class="bi bi-cpu me-2"></i>Ficha técnica</h3>
+          <p class="sub">Cómo está construido el juego.</p>
+          <table class="table tabla-st">
+            <tbody>
+              <tr><th>Motor</th><td>Unity 6</td></tr>
+              <tr><th>Plataforma</th><td>Web (WebGL) · Unity Play</td></tr>
+              <tr><th>Render</th><td>Built-in o URP</td></tr>
+              <tr><th>Entrada</th><td>Input System clásico y nuevo</td></tr>
+              <tr><th>Interfaz</th><td>Responsiva, base 1920×1080 (16:9, 16:10, 4:3, ultrawide)</td></tr>
+              <tr><th>Tipografías</th><td>Rye y Sniglet (SIL OFL)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="panel">
+          <h3><i class="bi bi-code-slash me-2"></i>Todo hecho por código</h3>
+          <p class="sub">Sin assets externos de audio ni efectos.</p>
+          <div class="row g-3">
+            <div class="col-sm-6"><div class="rasgo"><i class="bi bi-music-note-beamed"></i><h5>Música original</h5><p>Melodía western silbada en el menú y con armónica en la partida, sintetizada al iniciar.</p></div></div>
+            <div class="col-sm-6"><div class="rasgo"><i class="bi bi-cloud-sun"></i><h5>Cielo procedural</h5><p>Degradado, sol poniente, nubes y buitres volando en círculos.</p></div></div>
+            <div class="col-sm-6"><div class="rasgo"><i class="bi bi-stars"></i><h5>Partículas</h5><p>Polvo, chispas, brillo de monedas y confeti.</p></div></div>
+            <div class="col-sm-6"><div class="rasgo"><i class="bi bi-vector-pen"></i><h5>Íconos dibujados</h5><p>Estrella, sombrero, moneda con la “U” y flechas.</p></div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ================= 7. JUGAR AHORA ================= -->
-<section class="jugar" id="jugar">
-  <div class="contenedor">
-    <div class="cabecera rv">
-      <div class="num">¡A CABALGAR!</div>
+<section class="seccion jugar" id="jugar">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-play-circle"></i>¡A CABALGAR!</span>
       <h2>Jugar ahora</h2>
       <p>Gratis, en el navegador y sin instalar nada.</p>
-      <div class="separador">✦</div>
     </div>
 
-    <div class="consola rv">
+    <div class="consola" data-aos="zoom-in">
       <div class="pantalla" id="pantalla">
         <div class="portada" id="portada">
           <div>
-            <button class="play" id="btnPlay" aria-label="Jugar Sheriff Tornillo"><svg viewBox="0 0 24 24" fill="#2b1a12"><path d="M6 4l14 8-14 8z"/></svg></button>
+            <button class="play" id="btnPlay" aria-label="Jugar Sheriff Tornillo"><i class="bi bi-play-fill"></i></button>
             <h3>Sheriff Tornillo</h3>
-            <p>Build WebGL · Unity Play</p>
-            <a class="btn btn-oro" id="btnJugar" href="#" target="_blank" rel="noopener">JUGAR AHORA</a>
+            <p class="text-white fw-bold mb-3">Build WebGL · Unity Play</p>
+            <a class="btn btn-st btn-st-jugar" id="btnJugar" href="#" target="_blank" rel="noopener">JUGAR AHORA <i class="bi bi-box-arrow-up-right ms-1"></i></a>
           </div>
         </div>
       </div>
       <div class="consola-pie">
-        <span>🖥️ Para la mejor experiencia, usa pantalla completa dentro del juego.</span>
-        <a id="linkDirecto" href="#" target="_blank" rel="noopener">Abrir en Unity Play ↗</a>
+        <span><i class="bi bi-display me-1"></i>Para la mejor experiencia usa pantalla completa dentro del juego.</span>
+        <a id="linkDirecto" href="#" target="_blank" rel="noopener" class="fw-bold text-oro">Abrir en Unity Play <i class="bi bi-box-arrow-up-right"></i></a>
       </div>
     </div>
 
-    <div class="req-grid">
-      <div class="req rv"><h4>💻 Requisitos mínimos</h4><ul><li>Computadora con teclado y ratón</li><li>Chrome, Edge o Firefox actualizado (Safari 15+)</li><li>Navegador con WebGL 2.0</li><li>4 GB de RAM</li><li>Conexión a internet estable</li></ul></div>
-      <div class="req rv d1"><h4>🚀 Cómo ejecutarlo</h4><ol><li>Pulsa <b>JUGAR AHORA</b>.</li><li>Espera a que termine la barra de carga.</li><li>Haz clic sobre el juego para darle el foco del teclado.</li><li>En el menú principal elige <b>Jugar</b>.</li></ol></div>
-      <div class="req rv d2"><h4>🔧 Si algo falla</h4><ul><li>Recarga la página (Ctrl + F5)</li><li>Activa la aceleración por hardware</li><li>Desactiva extensiones que bloqueen scripts</li><li>¿No hay sonido? Haz clic dentro del juego</li></ul></div>
+    <div class="row g-4 mt-4" style="max-width:1000px;margin-inline:auto">
+      <div class="col-lg-4" data-aos="fade-up">
+        <div class="panel">
+          <h3 class="fs-5"><i class="bi bi-shield-check me-2"></i>Tu equipo</h3>
+          <p class="sub">Revisamos tu navegador en vivo:</p>
+          <div id="checks"></div>
+        </div>
+      </div>
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="panel">
+          <h3 class="fs-5"><i class="bi bi-pc-display me-2"></i>Requisitos mínimos</h3>
+          <ul class="list-unstyled text-suave mb-0 d-grid gap-2 mt-3">
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>Computadora con teclado y ratón</li>
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>Chrome, Edge o Firefox actualizado</li>
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>Navegador con WebGL 2.0</li>
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>4 GB de RAM</li>
+            <li><i class="bi bi-check2-circle text-oro me-2"></i>Conexión a internet estable</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="panel">
+          <h3 class="fs-5"><i class="bi bi-rocket-takeoff me-2"></i>Cómo ejecutarlo</h3>
+          <ol class="text-suave mb-0 d-grid gap-2 mt-3 ps-3">
+            <li>Pulsa <b class="text-white">JUGAR AHORA</b>.</li>
+            <li>Espera a que termine la barra de carga.</li>
+            <li>Haz clic sobre el juego para darle el foco del teclado.</li>
+            <li>En el menú principal elige <b class="text-white">Jugar</b> o pulsa <b class="text-white">Enter</b>.</li>
+          </ol>
+        </div>
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- ================= FAQ + EQUIPO ================= -->
+<section class="seccion papel" id="faq">
+  <svg class="borde-roto arriba" viewBox="0 0 1440 38" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-question-circle"></i>AYUDA</span>
+      <h2>Preguntas frecuentes</h2>
+      <p>Todo lo que necesitas para jugar sin problemas.</p>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-9" data-aos="fade-up">
+        <div class="accordion accordion-st d-grid gap-2" id="acordeon">
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#f1">¿Tengo que instalar algo para jugar?</button></h3>
+            <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#acordeon"><div class="accordion-body">No. El juego corre directamente en el navegador gracias a Unity WebGL. Solo pulsa <b>JUGAR AHORA</b> y espera a que cargue.</div></div></div>
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">¿Se puede jugar en el celular?</button></h3>
+            <div id="f2" class="accordion-collapse collapse" data-bs-parent="#acordeon"><div class="accordion-body">El juego está pensado para computadora con teclado. En el celular puedes ver esta página y probar la mini demo “Calienta motores”, que sí funciona con toques en la pantalla.</div></div></div>
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">Las teclas no responden, ¿qué hago?</button></h3>
+            <div id="f3" class="accordion-collapse collapse" data-bs-parent="#acordeon"><div class="accordion-body">Haz clic una vez dentro del juego para que tenga el foco del teclado. Si sigue sin responder, recarga la página con <b>Ctrl + F5</b>.</div></div></div>
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f4">No se escucha el sonido</button></h3>
+            <div id="f4" class="accordion-collapse collapse" data-bs-parent="#acordeon"><div class="accordion-body">Los navegadores bloquean el audio hasta que haces clic en la página. Haz clic dentro del juego y revisa el volumen en <b>Opciones</b>.</div></div></div>
+          <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f5">¿Se guarda mi récord?</button></h3>
+            <div id="f5" class="accordion-collapse collapse" data-bs-parent="#acordeon"><div class="accordion-body">Sí. El récord y las mejores estrellas se guardan en tu navegador. Puedes borrarlos desde <b>Opciones → Borrar récord</b>.</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cabecera mt-5 pt-4 mb-4" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-people"></i>EQUIPO</span>
+      <h2>Quiénes lo hicieron</h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      <div class="col-md-5 col-lg-4" data-aos="fade-up"><div class="miembro"><div class="avatar">JH</div><h4>Juan Miguel Huanca Uruña</h4><p>Desarrollo</p></div></div>
+      <div class="col-md-5 col-lg-4" data-aos="fade-up" data-aos-delay="100"><div class="miembro"><div class="avatar">AC</div><h4>Axel Marcelo Canqui Ticona</h4><p>Desarrollo</p></div></div>
+    </div>
+    <p class="text-center mt-4 mb-0" style="color:#6b4a35"><i class="bi bi-mortarboard-fill me-1"></i>Game Development · Universidad del Valle (Univalle) · 2026</p>
   </div>
 </section>
 </main>
 
 <footer>
-  <div class="contenedor">
-    <div class="pie">
-      <div>
-        <a href="#inicio" class="marca" style="margin-bottom:12px"><svg viewBox="0 0 24 24"><use href="#estrella"/></svg><span>Sheriff Tornillo<small>CARRERA EN EL DESIERTO</small></span></a>
-        <p>Endless runner 3D western desarrollado en Unity 6 para la asignatura Game Development · Universidad del Valle (Univalle).</p>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-5">
+        <a class="navbar-brand text-decoration-none mb-3" href="#inicio">
+          <svg class="logo" viewBox="0 0 24 24" width="42" height="42"><use href="#estrella"/></svg>
+          <span><span class="t1">Sheriff Tornillo</span><span class="t2">CARRERA EN EL DESIERTO</span></span>
+        </a>
+        <p class="text-suave small mb-0">Endless runner 3D western desarrollado en Unity 6 para la asignatura Game Development de la Universidad del Valle (Univalle).</p>
       </div>
-      <div>
-        <h5>Equipo</h5>
-        <ul><li>Juan Miguel Huanca Uruña</li><li>Axel Marcelo Canqui Ticona</li></ul>
-      </div>
-      <div>
+      <div class="col-6 col-lg-3">
         <h5>Explorar</h5>
-        <ul><li><a href="#historia">Historia</a></li><li><a href="#personaje">Personaje</a></li><li><a href="#mecanicas">Mecánicas</a></li><li><a href="#datos">Datos</a></li><li><a href="#jugar">Jugar ahora</a></li></ul>
+        <ul class="list-unstyled small d-grid gap-1 mb-0"><li><a href="#historia">Historia</a></li><li><a href="#personaje">Personaje</a></li><li><a href="#mecanicas">Mecánicas</a></li><li><a href="#datos">Datos</a></li><li><a href="#faq">FAQ</a></li></ul>
+      </div>
+      <div class="col-6 col-lg-4">
+        <h5>Jugar</h5>
+        <p class="small text-suave">Disponible gratis en Unity Play.</p>
+        <a class="btn btn-st btn-st-jugar btn-st-sm" href="#jugar"><i class="bi bi-play-fill"></i> Jugar ahora</a>
       </div>
     </div>
-    <div class="legal">
+    <div class="legal d-flex flex-wrap justify-content-between gap-2">
       <span>© 2026 Sheriff Tornillo · Proyecto académico</span>
-      <span>Fuentes Rye y Sniglet · SIL Open Font License</span>
+      <span>Hecho con Bootstrap 5 · Fuentes Rye y Sniglet (SIL OFL)</span>
     </div>
   </div>
 </footer>
 
-<script>
-/* =========================================================
-   ⚙️ CONFIG: pega aquí el enlace COMPLETO de tu juego en Unity Play
-   ========================================================= */
-const CONFIG = {
-  // Enlace público de tu juego (el que copias de la barra del navegador en play.unity.com)
-  urlUnity: "https://play.unity.com/en/games/3797a0b4-e17b-46d5-ab0b-ebe0cbc3c7af/sheriff-tornillo",
-  // Opcional: el "src" del código de inserción (Unity Play > Share/Compartir > Embed).
-  // Si lo dejas vacío, el botón abre el juego en una pestaña nueva.
-  urlEmbed: ""
-};
+<!-- Botón volver arriba -->
+<a href="#inicio" id="arriba" aria-label="Volver arriba"><i class="bi bi-arrow-up"></i></a>
 
-/* ---------- Enlaces del juego ---------- */
-(() => {
-  const jugar = document.getElementById("btnJugar");
-  const directo = document.getElementById("linkDirecto");
-  const play = document.getElementById("btnPlay");
-  jugar.href = directo.href = CONFIG.urlUnity;
+<!-- Modal de la captura -->
+<div class="modal fade" id="modalCaptura" tabindex="-1" aria-labelledby="modalCapturaTitulo" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-rye text-oro" id="modalCapturaTitulo">Menú principal del juego</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body p-2"><img src="img/captura.jpg" class="img-fluid rounded-3" alt="Captura del menú principal de Sheriff Tornillo" loading="lazy"></div>
+    </div>
+  </div>
+</div>
 
-  const cargarEmbed = (e) => {
-    if (!CONFIG.urlEmbed) { if (e.currentTarget === play) window.open(CONFIG.urlUnity, "_blank", "noopener"); return; }
-    e.preventDefault();
-    const f = document.createElement("iframe");
-    f.src = CONFIG.urlEmbed;
-    f.title = "Sheriff Tornillo – juego";
-    f.allow = "autoplay; fullscreen; gamepad";
-    f.allowFullscreen = true;
-    document.getElementById("portada").replaceWith(f);
-  };
-  play.addEventListener("click", cargarEmbed);
-  jugar.addEventListener("click", cargarEmbed);
-})();
+<!-- Aviso (toast) -->
+<div class="toast-container position-fixed bottom-0 start-0 p-3" style="z-index:1090">
+  <div id="aviso" class="toast" role="status" aria-live="polite" aria-atomic="true">
+    <div class="toast-header"><i class="bi bi-trophy-fill me-2"></i><strong class="me-auto font-rye">¡Bien hecho, sheriff!</strong><button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Cerrar"></button></div>
+    <div class="toast-body" id="avisoTexto">Recuperaste el oro.</div>
+  </div>
+</div>
 
-/* ---------- Navegación ---------- */
-const nav = document.getElementById("nav");
-const hamb = document.getElementById("hamb");
-hamb.addEventListener("click", () => {
-  const abierta = nav.classList.toggle("abierta");
-  hamb.setAttribute("aria-expanded", abierta);
-});
-document.querySelectorAll(".menu a").forEach(a => a.addEventListener("click", () => {
-  nav.classList.remove("abierta"); hamb.setAttribute("aria-expanded", false);
-}));
-const onScroll = () => {
-  nav.classList.toggle("solida", scrollY > 40);
-  const sol = document.getElementById("sol");
-  if (sol && scrollY < innerHeight) sol.style.transform = `translateY(${scrollY * 0.35}px)`;
-};
-addEventListener("scroll", onScroll, { passive: true }); onScroll();
-
-const enlaces = [...document.querySelectorAll(".menu a")];
-const obsSecciones = new IntersectionObserver(entradas => {
-  entradas.forEach(en => {
-    if (en.isIntersecting) enlaces.forEach(a => a.classList.toggle("activo", a.getAttribute("href") === "#" + en.target.id));
-  });
-}, { rootMargin: "-45% 0px -50% 0px" });
-document.querySelectorAll("main section[id]").forEach(s => obsSecciones.observe(s));
-
-/* ---------- Animaciones al hacer scroll ---------- */
-const contar = (el) => {
-  const fin = +el.dataset.cuenta, pre = el.dataset.pre || "", sup = el.querySelector("sup");
-  const supHTML = sup ? sup.outerHTML : "";
-  const t0 = performance.now(), dur = 1600;
-  const paso = (t) => {
-    const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
-    el.innerHTML = pre + Math.round(fin * e) + supHTML;
-    if (p < 1) requestAnimationFrame(paso);
-  };
-  requestAnimationFrame(paso);
-};
-const obsReveal = new IntersectionObserver(entradas => {
-  entradas.forEach(en => {
-    if (!en.isIntersecting) return;
-    en.target.classList.add("visible");
-    en.target.querySelectorAll("[data-cuenta]").forEach(contar);
-    if (en.target.querySelector("#vel")) animarVelocidad();
-    obsReveal.unobserve(en.target);
-  });
-}, { threshold: .18 });
-document.querySelectorAll(".rv").forEach(el => obsReveal.observe(el));
-
-const vel = document.getElementById("vel");
-for (let i = 0; i < 15; i++) vel.appendChild(document.createElement("i"));
-function animarVelocidad() {
-  [...vel.children].forEach((b, i) => {
-    const v = 10 + (24 - 10) * (1 - Math.pow(1 - i / 14, 1.6));
-    setTimeout(() => b.style.height = (v / 24 * 100) + "%", i * 70);
-    b.title = v.toFixed(1) + " m/s";
-  });
-}
-
-/* ---------- Teclas que se iluminan ---------- */
-const teclas = document.querySelectorAll(".control .k[data-k]");
-const iluminar = (key, on) => teclas.forEach(k => {
-  if (k.dataset.k.toLowerCase() === key.toLowerCase()) k.classList.toggle("pulsada", on);
-});
-addEventListener("keydown", e => iluminar(e.key, true));
-addEventListener("keyup", e => iluminar(e.key, false));
-
-/* =========================================================
-   🎮 Mini demo "Calienta motores"
-   ========================================================= */
-(() => {
-  const cv = document.getElementById("mini"), ctx = cv.getContext("2d");
-  const demo = document.getElementById("demo");
-  let W = 0, H = 0, dpr = 1;
-  const ajustar = () => {
-    dpr = Math.min(2, devicePixelRatio || 1);
-    W = cv.clientWidth; H = cv.clientHeight;
-    cv.width = W * dpr; cv.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  };
-  addEventListener("resize", () => { ajustar(); if (j) dibujar(0); }); ajustar();
-
-  let estado = "inicio", visible = false;
-  let j, obs, mon, vel, puntos, vidas, tiempo, invencible, sigObs, part;
-  const reiniciar = () => {
-    j = { x: 70, y: 0, vy: 0, desliza: 0 };
-    obs = []; mon = []; part = [];
-    vel = 260; puntos = 0; vidas = 3; tiempo = 0; invencible = 0; sigObs = 1.2;
-  };
-  reiniciar();
-  const suelo = () => H - 38;
-  const altoRobot = () => j.desliza > 0 ? 26 : 50;
-
-  const saltar = () => {
-    if (estado !== "jugando") { reiniciar(); estado = "jugando"; return; }
-    if (j.y === 0) { j.vy = 620; j.desliza = 0; polvo(); }
-  };
-  const deslizar = () => {
-    if (estado !== "jugando") return;
-    if (j.y > 0) j.vy = -900;
-    j.desliza = 0.6;
-  };
-  function polvo() { for (let i = 0; i < 6; i++) part.push({ x: j.x, y: suelo(), vx: -60 - Math.random() * 80, vy: 20 + Math.random() * 50, v: .5, c: "#f1cf9d" }); }
-  function chispas(x, y, c) { for (let i = 0; i < 12; i++) part.push({ x, y, vx: (Math.random() - .5) * 300, vy: Math.random() * 260, v: .6, c }); }
-
-  new IntersectionObserver(e => visible = e[0].isIntersecting, { threshold: .4 }).observe(demo);
-  addEventListener("keydown", e => {
-    if (!visible) return;
-    if (["ArrowUp", " ", "w", "W"].includes(e.key)) { e.preventDefault(); saltar(); }
-    if (["ArrowDown", "s", "S"].includes(e.key)) { e.preventDefault(); deslizar(); }
-  });
-  cv.addEventListener("pointerdown", e => {
-    const r = cv.getBoundingClientRect();
-    (estado !== "jugando" || e.clientY - r.top < r.height / 2) ? saltar() : deslizar();
-  });
-  document.getElementById("bSalta").addEventListener("pointerdown", e => { e.preventDefault(); saltar(); });
-  document.getElementById("bDesliza").addEventListener("pointerdown", e => { e.preventDefault(); deslizar(); });
-
-  const choca = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
-
-  function actualizar(dt) {
-    part.forEach(p => { p.x += p.vx * dt; p.y -= p.vy * dt; p.vy -= 500 * dt; p.v -= dt; });
-    part = part.filter(p => p.v > 0);
-    if (estado !== "jugando") return;
-    tiempo += dt; puntos += 10 * dt;
-    vel = Math.min(560, 260 + tiempo * 9);
-    // jugador
-    j.vy -= 1800 * dt; j.y = Math.max(0, j.y + j.vy * dt);
-    if (j.y === 0 && j.vy < 0) j.vy = 0;
-    if (j.desliza > 0) j.desliza -= dt;
-    if (invencible > 0) invencible -= dt;
-    // generar
-    sigObs -= dt;
-    if (sigObs <= 0) {
-      const alto = Math.random() < .4 && tiempo > 3;
-      const x = W + 20;
-      if (alto) {
-        obs.push({ x, w: 34, h: 26, alto: true, tipo: Math.random() < .5 ? "buitre" : "cartel" });
-        for (let i = 0; i < 3; i++) mon.push({ x: x - 10 + i * 24, alt: 12 });
-      } else {
-        obs.push({ x, w: 22, h: 36, alto: false, tipo: Math.random() < .6 ? "cactus" : "tnt" });
-        [[-30, 70], [11, 100], [52, 70]].forEach(([dx, a]) => mon.push({ x: x + dx, alt: a }));
-      }
-      sigObs = .9 + Math.random() * 1.1 - Math.min(.4, tiempo / 80);
-    }
-    const caja = { x: j.x - 14, y: suelo() - j.y - altoRobot(), w: 28, h: altoRobot() };
-    obs.forEach(o => {
-      o.x -= (vel + (o.tipo === "buitre" ? 60 : 0)) * dt;
-      const oy = o.alto ? suelo() - 34 - o.h : suelo() - o.h;
-      if (!o.golpe && invencible <= 0 && choca(caja, { x: o.x, y: oy, w: o.w, h: o.h })) {
-        o.golpe = true; vidas--; invencible = 1.5; chispas(j.x, suelo() - j.y - 30, "#ffb347");
-        if (vidas <= 0) estado = "fin";
-      }
-    });
-    mon.forEach(m => {
-      m.x -= vel * dt;
-      if (!m.tomada && choca(caja, { x: m.x - 8, y: suelo() - m.alt - 8, w: 16, h: 16 })) {
-        m.tomada = true; puntos += 50; chispas(m.x, suelo() - m.alt, "#f7c948");
-      }
-    });
-    obs = obs.filter(o => o.x > -60); mon = mon.filter(m => m.x > -20 && !m.tomada);
-    if (puntos >= 1000) { estado = "gana"; for (let i = 0; i < 4; i++) chispas(W * Math.random(), H * .6, ["#f7c948", "#e8743b", "#7fa3ab", "#9e2a36"][i]); }
-  }
-
-  let fondoX = 0;
-  function dibujar(dt) {
-    const g = ctx.createLinearGradient(0, 0, 0, H);
-    const p = Math.min(1, puntos / 1000);
-    g.addColorStop(0, p < .5 ? "#3a1636" : "#2a0f2a"); g.addColorStop(.6, p < .5 ? "#c9553b" : "#a5333a"); g.addColorStop(1, "#f2a65a");
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-    // sol
-    ctx.fillStyle = "rgba(255,210,120,.85)"; ctx.beginPath(); ctx.arc(W * .78, suelo() - 30 + p * 40, 40, 0, 7); ctx.fill();
-    // mesas
-    if (estado === "jugando") fondoX = (fondoX + vel * .15 * dt) % 400;
-    ctx.fillStyle = "#7a2f35";
-    for (let k = -1; k < W / 400 + 2; k++) {
-      const bx = k * 400 - fondoX;
-      ctx.beginPath(); ctx.moveTo(bx, suelo()); ctx.lineTo(bx + 40, suelo() - 50); ctx.lineTo(bx + 140, suelo() - 50); ctx.lineTo(bx + 170, suelo()); ctx.lineTo(bx + 230, suelo() - 28); ctx.lineTo(bx + 300, suelo() - 28); ctx.lineTo(bx + 330, suelo()); ctx.fill();
-    }
-    // suelo
-    ctx.fillStyle = "#d39a5b"; ctx.fillRect(0, suelo(), W, H - suelo());
-    ctx.fillStyle = "#b9773f"; ctx.fillRect(0, suelo() + 14, W, H);
-    // monedas
-    const t = performance.now() / 1000;
-    mon.forEach(m => {
-      const sx = Math.abs(Math.cos(t * 5 + m.x * .05));
-      ctx.fillStyle = "#f7c948"; ctx.strokeStyle = "#a87a14"; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.ellipse(m.x, suelo() - m.alt, 8 * Math.max(.2, sx), 8, 0, 0, 7); ctx.fill(); ctx.stroke();
-    });
-    // obstáculos
-    obs.forEach(o => {
-      if (o.alto) {
-        const y = suelo() - 34 - o.h;
-        if (o.tipo === "cartel") {
-          ctx.fillStyle = "#6b4226"; ctx.fillRect(o.x + 3, y - 4, 4, 70); ctx.fillRect(o.x + o.w - 7, y - 4, 4, 70);
-          ctx.fillStyle = "#f7ead0"; ctx.fillRect(o.x - 4, y, o.w + 8, o.h);
-          ctx.fillStyle = "#7a1f2b"; ctx.font = "9px Rye, serif"; ctx.textAlign = "center"; ctx.fillText("SE BUSCA", o.x + o.w / 2, y + 16);
-        } else {
-          const a = Math.sin(t * 14) * 8;
-          ctx.strokeStyle = "#2a1230"; ctx.lineWidth = 4; ctx.lineCap = "round";
-          ctx.beginPath(); ctx.moveTo(o.x - 4, y + 10 - a); ctx.quadraticCurveTo(o.x + 8, y + 2, o.x + 17, y + 14); ctx.quadraticCurveTo(o.x + 26, y + 2, o.x + 38, y + 10 - a); ctx.stroke();
-          ctx.fillStyle = "#2a1230"; ctx.beginPath(); ctx.ellipse(o.x + 17, y + 16, 8, 6, 0, 0, 7); ctx.fill();
-        }
-      } else {
-        const y = suelo() - o.h;
-        if (o.tipo === "cactus") {
-          ctx.fillStyle = "#3f7a46"; ctx.strokeStyle = "#244a29"; ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.roundRect(o.x + 6, y, 10, o.h, 5); ctx.fill(); ctx.stroke();
-          ctx.beginPath(); ctx.roundRect(o.x - 2, y + 10, 6, 14, 3); ctx.roundRect(o.x + 18, y + 6, 6, 14, 3); ctx.fill(); ctx.stroke();
-        } else {
-          ctx.fillStyle = "#9b2f2f"; ctx.strokeStyle = "#4a1019"; ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.roundRect(o.x - 2, y + 6, o.w + 4, o.h - 6, 4); ctx.fill(); ctx.stroke();
-          ctx.fillStyle = "#ffdf7e"; ctx.font = "9px Rye, serif"; ctx.textAlign = "center"; ctx.fillText("TNT", o.x + o.w / 2, y + 26);
-        }
-      }
-    });
-    // robot
-    const parpadeo = invencible > 0 && Math.floor(t * 14) % 2 === 0;
-    if (!parpadeo) dibujarRobot(j.x, suelo() - j.y, j.desliza > 0, t);
-    // partículas
-    part.forEach(p => { ctx.globalAlpha = Math.max(0, p.v * 1.6); ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, 4, 4); });
-    ctx.globalAlpha = 1;
-    // HUD
-    ctx.textAlign = "left"; ctx.fillStyle = "#fff"; ctx.font = "16px Rye, serif";
-    ctx.fillText(Math.floor(puntos) + " / 1000", 14, 26);
-    ctx.textAlign = "right"; ctx.fillStyle = "#9e2a36";
-    ctx.fillText("🎩".repeat(Math.max(0, vidas)), W - 12, 26);
-    // pantallas
-    if (estado !== "jugando") {
-      ctx.fillStyle = "rgba(28,15,26,.62)"; ctx.fillRect(0, 0, W, H);
-      ctx.textAlign = "center"; ctx.fillStyle = "#f7c948"; ctx.font = (W < 500 ? 22 : 30) + "px Rye, serif";
-      const tit = estado === "inicio" ? "¡Atrapa a los Hermanos Óxido!" : estado === "gana" ? "¡Recuperaste el oro! ★★★" : "Se te cayó el sombrero…";
-      ctx.fillText(tit, W / 2, H / 2 - 8);
-      ctx.fillStyle = "#fbeedd"; ctx.font = "15px Sniglet, sans-serif";
-      ctx.fillText(estado === "inicio" ? "Pulsa ↑ / Espacio o toca para empezar" : `Puntos: ${Math.floor(puntos)} · Pulsa ↑ o toca para reintentar`, W / 2, H / 2 + 22);
-    }
-  }
-
-  function dibujarRobot(x, base, agachado, t) {
-    ctx.save(); ctx.translate(x, base);
-    const bob = j.y === 0 && estado === "jugando" ? Math.abs(Math.sin(t * 16)) * 3 : 0;
-    ctx.translate(0, -bob);
-    if (agachado) ctx.scale(1.15, .55);
-    // piernas
-    ctx.fillStyle = "#4d6a71";
-    const pa = estado === "jugando" ? Math.sin(t * 16) * 5 : 0;
-    ctx.fillRect(-10 + pa, -14, 7, 14); ctx.fillRect(3 - pa, -14, 7, 14);
-    ctx.fillStyle = "#6b4226"; ctx.fillRect(-12 + pa, -4, 10, 4); ctx.fillRect(1 - pa, -4, 10, 4);
-    // cuerpo
-    ctx.fillStyle = "#9fbfc6"; ctx.strokeStyle = "#3e5a60"; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.roundRect(-13, -34, 26, 21, 5); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#f7c948"; ctx.beginPath(); ctx.arc(5, -24, 3.5, 0, 7); ctx.fill();
-    ctx.fillStyle = "#9e2a36"; ctx.beginPath(); ctx.moveTo(-8, -34); ctx.lineTo(8, -34); ctx.lineTo(0, -27); ctx.fill();
-    // cabeza
-    ctx.fillStyle = "#b9d3d8"; ctx.beginPath(); ctx.roundRect(-12, -52, 26, 18, 5); ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#1c0f1a"; ctx.beginPath(); ctx.roundRect(-7, -47, 19, 7, 3); ctx.fill();
-    ctx.fillStyle = "#ffd36b"; ctx.fillRect(-3, -45, 3, 3); ctx.fillRect(6, -45, 3, 3);
-    // sombrero
-    ctx.fillStyle = "#7a1f2b"; ctx.beginPath(); ctx.ellipse(1, -52, 18, 3.5, 0, 0, 7); ctx.fill();
-    ctx.beginPath(); ctx.roundRect(-8, -62, 18, 11, 4); ctx.fill();
-    ctx.fillStyle = "#f7c948"; ctx.fillRect(-8, -55, 18, 2);
-    ctx.restore();
-  }
-
-  let ultimo = performance.now();
-  function bucle(ahora) {
-    const dt = Math.min(.033, (ahora - ultimo) / 1000); ultimo = ahora;
-    if (visible) { actualizar(dt); dibujar(dt); }
-    requestAnimationFrame(bucle);
-  }
-  dibujar(0);
-  requestAnimationFrame(bucle);
-})();
-</script>
+<!-- Librerías -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanilla-tilt@1.8.1/dist/vanilla-tilt.min.js"></script>
+<!-- Código propio -->
+<script src="js/main.js"></script>
 </body>
 </html>
