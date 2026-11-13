@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sheriff Tornillo · Carrera en el Desierto | Juego oficial</title>
-<meta name="description" content="Sheriff Tornillo: endless runner 3D western hecho en Unity 6. Persigue a los Hermanos Óxido, recupera el oro y llega a 1000 puntos. Juega gratis en tu navegador.">
+<title>Juan Miguel Huanca Uruña · Game Developer | Sheriff Tornillo: 2 juegos</title>
+<meta name="description" content="Portal de Juan Miguel Huanca Uruña: dos videojuegos 3D del Sheriff Tornillo jugables en el navegador. Juego 1: Carrera en el Desierto (endless runner). Juego 2: El Laberinto del Oro (estilo Pac-Man).">
 <meta name="author" content="Juan Miguel Huanca Uruña · Axel Marcelo Canqui Ticona">
 <meta name="theme-color" content="#1b0e1c">
 <!-- Open Graph: así se ve el enlace al compartirlo en WhatsApp, Teams o Facebook -->
@@ -78,7 +78,8 @@
         <li class="nav-item"><a class="nav-link" href="#mecanicas">Mecánicas</a></li>
         <li class="nav-item"><a class="nav-link" href="#datos">Datos</a></li>
         <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
-        <li class="nav-item ms-lg-2"><a class="btn btn-st btn-st-jugar btn-st-sm" href="#jugar"><i class="bi bi-play-fill"></i> Jugar ahora</a></li>
+        <li class="nav-item ms-lg-2"><a class="btn btn-st btn-juego1 btn-st-sm" href="#juego1"><i class="bi bi-1-circle-fill"></i> Juego 1</a></li>
+        <li class="nav-item"><a class="btn btn-st btn-juego2 btn-st-sm" href="#juego2"><i class="bi bi-2-circle-fill"></i> Juego 2</a></li>
       </ul>
     </div>
   </div>
@@ -97,12 +98,39 @@
       <a class="nav-link" href="#datos" data-bs-dismiss="offcanvas"><i class="bi bi-bar-chart me-2"></i>Datos</a>
       <a class="nav-link" href="#faq" data-bs-dismiss="offcanvas"><i class="bi bi-question-circle me-2"></i>Preguntas frecuentes</a>
     </nav>
-    <a class="btn btn-st btn-st-jugar mt-4" href="#jugar" data-bs-dismiss="offcanvas"><i class="bi bi-play-fill"></i> JUGAR AHORA</a>
+    <a class="btn btn-st btn-juego1 mt-4" href="#juego1" data-bs-dismiss="offcanvas"><i class="bi bi-1-circle-fill"></i> JUEGO 1 · Carrera</a>
+    <a class="btn btn-st btn-juego2 mt-2" href="#juego2" data-bs-dismiss="offcanvas"><i class="bi bi-2-circle-fill"></i> JUEGO 2 · Laberinto</a>
     <p class="text-suave small mt-auto mb-0">Game Development · Univalle 2026</p>
   </div>
 </div>
 
 <main>
+<!-- ================= 0. BANNER DEL DEVELOPER + SELECCIÓN DE JUEGOS ================= -->
+<section class="dev-banner" id="developer" aria-label="Identidad del desarrollador">
+  <div class="container">
+    <div class="dev-caja">
+      <div class="dev-avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#estrella"/></svg></div>
+      <div class="dev-texto">
+        <span class="dev-rol"><i class="bi bi-controller me-1"></i>GAME DEVELOPER · UNIVALLE</span>
+        <h1 class="dev-nombre">Juan Miguel Huanca Uruña</h1>
+        <p class="dev-sub">Portal de videojuegos 3D · Game Development 2026 · 2 juegos jugables en esta misma página</p>
+      </div>
+    </div>
+    <div class="dev-juegos" role="navigation" aria-label="Elegir juego">
+      <a class="dev-btn dev-btn-1" href="#juego1">
+        <span class="num">1</span>
+        <span><b>ENLACE JUEGO 1</b><small>Carrera en el Desierto · endless runner</small></span>
+        <i class="bi bi-arrow-down-circle-fill"></i>
+      </a>
+      <a class="dev-btn dev-btn-2" href="#juego2">
+        <span class="num">2</span>
+        <span><b>ENLACE JUEGO 2</b><small>El Laberinto del Oro · estilo Pac-Man</small></span>
+        <i class="bi bi-arrow-down-circle-fill"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
 <!-- ================= 2. SECCIÓN PRINCIPAL ================= -->
 <header class="hero" id="inicio">
   <div class="sol" id="sol"></div>
@@ -116,13 +144,13 @@
   <div class="container">
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
-        <div data-aos="fade-up"><span class="insignia"><span class="punto"></span>ENDLESS RUNNER 3D · WESTERN</span></div>
-        <h1 class="hero-titulo" data-aos="fade-up" data-aos-delay="100">Sheriff<br>Tornillo</h1>
+        <div data-aos="fade-up"><span class="insignia"><span class="punto"></span>2 JUEGOS 3D · WESTERN</span></div>
+        <h2 class="hero-titulo" data-aos="fade-up" data-aos-delay="100">Sheriff<br>Tornillo</h2>
         <div class="hero-sub" data-aos="fade-up" data-aos-delay="150">Carrera en el Desierto</div>
         <p class="hero-frase" data-aos="fade-up" data-aos-delay="200"><span id="maquina">El oro no se recupera solo, compañero.</span><span class="cursor"></span></p>
         <p class="hero-desc" data-aos="fade-up" data-aos-delay="250">Los <b>Hermanos Óxido</b> asaltaron el pueblo y huyen con todo el oro. Corre sin parar por el desierto, salta cactus y barriles de TNT, deslízate bajo carteles y buitres, y llega a <b>1000 puntos</b> antes de que se te acaben los sombreros.</p>
         <div class="d-flex flex-wrap gap-3 my-4" data-aos="fade-up" data-aos-delay="300">
-          <a href="#jugar" class="btn btn-st btn-st-jugar"><i class="bi bi-play-fill me-1"></i>JUGAR AHORA</a>
+          <a href="#juego1" class="btn btn-st btn-st-jugar"><i class="bi bi-play-fill me-1"></i>JUGAR AHORA</a>
           <a href="#historia" class="btn btn-st btn-st-pizarra"><i class="bi bi-book me-1"></i>Conoce la historia</a>
         </div>
         <div class="row g-2 g-sm-3" style="max-width:560px" data-aos="fade-up" data-aos-delay="350">
@@ -471,32 +499,79 @@
   </div>
 </section>
 
-<!-- ================= 7. JUGAR AHORA ================= -->
-<section class="seccion jugar" id="jugar">
+<!-- ================= 7. JUEGOS (los dos se juegan en esta misma página) ================= -->
+<section class="seccion juego juego-1" id="juego1" aria-labelledby="tituloJuego1">
   <div class="container">
     <div class="cabecera" data-aos="fade-up">
-      <span class="kicker"><i class="bi bi-play-circle"></i>¡A CABALGAR!</span>
-      <h2>Jugar ahora</h2>
-      <p>Gratis, en el navegador y sin instalar nada.</p>
+      <span class="kicker"><i class="bi bi-1-circle-fill"></i>JUEGO 1 · ENDLESS RUNNER</span>
+      <h2 id="tituloJuego1">Juego 1 · Carrera en el Desierto</h2>
+      <p>Corre tras los Hermanos Óxido: salta cactus y barriles de TNT, deslízate bajo carteles y buitres, y llega a 1000 puntos con tus 3 sombreros.</p>
     </div>
 
-    <div class="consola" data-aos="zoom-in">
-      <div class="pantalla" id="pantalla">
-        <div class="portada" id="portada">
-          <div>
-            <button class="play" id="btnPlay" aria-label="Jugar Sheriff Tornillo"><i class="bi bi-play-fill"></i></button>
-            <h3>Sheriff Tornillo</h3>
-            <p class="text-white fw-bold mb-3">Build WebGL · Unity Play</p>
-            <a class="btn btn-st btn-st-jugar" id="btnJugar" href="#" target="_blank" rel="noopener">JUGAR AHORA <i class="bi bi-box-arrow-up-right ms-1"></i></a>
-          </div>
+    <div class="consola consola-juego" data-juego="carrera" data-web="juegos/carrera/index.html" data-unity="juegos/unity/carrera/index.html">
+      <!-- Botón de inicio: encima del área de juego. El juego NO carga hasta que se presiona. -->
+      <div class="barra-start">
+        <button class="btn-start" type="button" data-accion="start" aria-controls="area1"><i class="bi bi-play-fill"></i> START</button>
+        <div class="estado-juego" data-estado><span class="led"></span><span data-estado-txt>En espera · presiona START</span></div>
+        <div class="ms-auto d-flex gap-2">
+          <button class="btn-mini" type="button" data-accion="reiniciar" disabled title="Reiniciar"><i class="bi bi-arrow-clockwise"></i><span class="d-none d-md-inline"> Reiniciar</span></button>
+          <button class="btn-mini" type="button" data-accion="completa" disabled title="Pantalla completa"><i class="bi bi-arrows-fullscreen"></i></button>
+          <button class="btn-mini" type="button" data-accion="detener" disabled title="Detener"><i class="bi bi-stop-fill"></i></button>
+        </div>
+      </div>
+      <div class="pantalla area-juego" id="area1">
+        <div class="espera" data-espera>
+          <div class="ruleta-portal" aria-hidden="true"></div>
+          <h3>Sección Juego 1</h3>
+          <p>Aquí aparece el juego listo para jugar.<br>No abre otra pestaña.</p>
+          <div class="teclas-juego"><span class="tecla">↑</span> saltar <span class="tecla">↓</span> deslizarse <span class="tecla">P</span> pausa <span class="tecla">R</span> reiniciar</div>
         </div>
       </div>
       <div class="consola-pie">
-        <span><i class="bi bi-display me-1"></i>Para la mejor experiencia usa pantalla completa dentro del juego.</span>
-        <a id="linkDirecto" href="#" target="_blank" rel="noopener" class="fw-bold text-oro">Abrir en Unity Play <i class="bi bi-box-arrow-up-right"></i></a>
+        <span><i class="bi bi-info-circle me-1"></i>Haz clic dentro del juego si el teclado no responde.</span>
+        <span class="fuente" data-fuente></span>
       </div>
     </div>
+  </div>
+</section>
 
+<section class="seccion juego juego-2" id="juego2" aria-labelledby="tituloJuego2">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-2-circle-fill"></i>JUEGO 2 · LABERINTO ESTILO PAC-MAN</span>
+      <h2 id="tituloJuego2">Juego 2 · El Laberinto del Oro</h2>
+      <p>Recoge las 36 monedas del laberinto y escapa por la puerta. Dos bandidos con pathfinding patrullan los pasillos y, si su rayo de visión te alcanza, te persiguen.</p>
+    </div>
+
+    <div class="consola consola-juego" data-juego="laberinto" data-web="juegos/laberinto/index.html" data-unity="juegos/unity/laberinto/index.html">
+      <!-- Botón de inicio: encima del área de juego. El juego NO carga hasta que se presiona. -->
+      <div class="barra-start">
+        <button class="btn-start" type="button" data-accion="start" aria-controls="area2"><i class="bi bi-play-fill"></i> START</button>
+        <div class="estado-juego" data-estado><span class="led"></span><span data-estado-txt>En espera · presiona START</span></div>
+        <div class="ms-auto d-flex gap-2">
+          <button class="btn-mini" type="button" data-accion="reiniciar" disabled title="Reiniciar"><i class="bi bi-arrow-clockwise"></i><span class="d-none d-md-inline"> Reiniciar</span></button>
+          <button class="btn-mini" type="button" data-accion="completa" disabled title="Pantalla completa"><i class="bi bi-arrows-fullscreen"></i></button>
+          <button class="btn-mini" type="button" data-accion="detener" disabled title="Detener"><i class="bi bi-stop-fill"></i></button>
+        </div>
+      </div>
+      <div class="pantalla area-juego" id="area2">
+        <div class="espera" data-espera>
+          <div class="ruleta-portal" aria-hidden="true"></div>
+          <h3>Sección Juego 2</h3>
+          <p>Aquí aparece el juego listo para jugar.<br>No abre otra pestaña.</p>
+          <div class="teclas-juego"><span class="tecla">←</span><span class="tecla">↑</span><span class="tecla">↓</span><span class="tecla">→</span> mover <span class="tecla">L</span> rayos <span class="tecla">R</span> reiniciar</div>
+        </div>
+      </div>
+      <div class="consola-pie">
+        <span><i class="bi bi-info-circle me-1"></i>Haz clic dentro del juego si el teclado no responde.</span>
+        <span class="fuente" data-fuente></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion jugar pt-0" id="jugar">
+  <div class="container">
     <div class="row g-4 mt-4" style="max-width:1000px;margin-inline:auto">
       <div class="col-lg-4" data-aos="fade-up">
         <div class="panel">
@@ -521,10 +596,10 @@
         <div class="panel">
           <h3 class="fs-5"><i class="bi bi-rocket-takeoff me-2"></i>Cómo ejecutarlo</h3>
           <ol class="text-suave mb-0 d-grid gap-2 mt-3 ps-3">
-            <li>Pulsa <b class="text-white">JUGAR AHORA</b>.</li>
-            <li>Espera a que termine la barra de carga.</li>
+            <li>Baja a la sección del juego y pulsa <b class="text-white">START</b>.</li>
+            <li>Espera a que cargue (aparece dentro de la misma página).</li>
             <li>Haz clic sobre el juego para darle el foco del teclado.</li>
-            <li>En el menú principal elige <b class="text-white">Jugar</b> o pulsa <b class="text-white">Enter</b>.</li>
+            <li>Juega con el teclado. <b class="text-white">R</b> reinicia y <b class="text-white">REINICIAR</b> vuelve a empezar.</li>
           </ol>
         </div>
       </div>
@@ -545,7 +620,7 @@
       <div class="col-lg-9" data-aos="fade-up">
         <div class="accordion accordion-st d-grid gap-2" id="acordeon">
           <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#f1">¿Tengo que instalar algo para jugar?</button></h3>
-            <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#acordeon"><div class="accordion-body">No. El juego corre directamente en el navegador gracias a Unity WebGL. Solo pulsa <b>JUGAR AHORA</b> y espera a que cargue.</div></div></div>
+            <div id="f1" class="accordion-collapse collapse show" data-bs-parent="#acordeon"><div class="accordion-body">No. Los dos juegos corren directamente en esta página. Baja a la sección del juego, pulsa <b>START</b> y espera a que cargue: no se abre ninguna pestaña nueva.</div></div></div>
           <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f2">¿Se puede jugar en el celular?</button></h3>
             <div id="f2" class="accordion-collapse collapse" data-bs-parent="#acordeon"><div class="accordion-body">El juego está pensado para computadora con teclado. En el celular puedes ver esta página y probar la mini demo “Calienta motores”, que sí funciona con toques en la pantalla.</div></div></div>
           <div class="accordion-item rounded-4 overflow-hidden"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#f3">Las teclas no responden, ¿qué hago?</button></h3>
@@ -587,12 +662,12 @@
       </div>
       <div class="col-6 col-lg-4">
         <h5>Jugar</h5>
-        <p class="small text-suave">Disponible gratis en Unity Play.</p>
-        <a class="btn btn-st btn-st-jugar btn-st-sm" href="#jugar"><i class="bi bi-play-fill"></i> Jugar ahora</a>
+        <p class="small text-suave">Los dos juegos corren aquí mismo, sin abrir otra pestaña.</p>
+        <div class="d-flex flex-wrap gap-2"><a class="btn btn-st btn-juego1 btn-st-sm" href="#juego1"><i class="bi bi-1-circle-fill"></i> Juego 1</a><a class="btn btn-st btn-juego2 btn-st-sm" href="#juego2"><i class="bi bi-2-circle-fill"></i> Juego 2</a></div>
       </div>
     </div>
     <div class="legal d-flex flex-wrap justify-content-between gap-2">
-      <span>© 2026 Sheriff Tornillo · Proyecto académico</span>
+      <span>© 2026 Juan Miguel Huanca Uruña · Sheriff Tornillo · Proyecto académico</span>
       <span>Hecho con Bootstrap 5 · Fuentes Rye y Sniglet (SIL OFL)</span>
     </div>
   </div>

@@ -1,0 +1,55 @@
+/* Sheriff Tornillo · interfaz común de los juegos web */
+:root { --guindo:#8e1a4a; --oro:#f9c33b; --oro2:#ffe08a; --noche:#1b0e1c; --texto:#fbeedd; --panel:rgba(27,14,28,.82); }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #1b0e1c; color: var(--texto); font-family: Sniglet, system-ui, sans-serif; user-select: none; }
+canvas#lienzo { display: block; width: 100vw; height: 100vh; outline: none; }
+
+.hud { position: fixed; inset: 0 0 auto 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 1.2vw; padding: 1.4vh 1.4vw; pointer-events: none; }
+.tarjeta { display: flex; align-items: center; gap: .7em; background: var(--panel); border: 3px solid var(--oro); border-radius: 16px; padding: .5em 1em; font-size: clamp(11px, 1.45vw, 22px); box-shadow: 0 6px 18px rgba(0,0,0,.35); min-width: 9em; }
+.tarjeta small { display: block; color: var(--oro); font-weight: 800; letter-spacing: .06em; font-size: .72em; }
+.tarjeta b { display: block; font-family: Rye, serif; font-size: 1.7em; line-height: 1.05; font-weight: 400; }
+.tarjeta b span { font-family: inherit; }
+.moneda-ic { width: 2.4em; height: 2.4em; flex: none; }
+.barra { height: .45em; background: rgba(0,0,0,.45); border-radius: 99px; margin-top: .35em; overflow: hidden; }
+.barra i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--oro), var(--oro2)); border-radius: 99px; transition: width .3s; }
+.centro { text-align: center; flex: 1; }
+.titulo { font-family: Rye, serif; color: var(--oro); font-size: clamp(13px, 2.2vw, 34px); text-shadow: 2px 3px 0 var(--guindo), 0 0 12px rgba(0,0,0,.5); }
+.estado-puerta { display: inline-block; margin-top: .4em; background: rgba(20,10,8,.8); border: 2px solid #ff6a50; color: #ff8a70; padding: .3em 1em; border-radius: 12px; font-weight: 800; font-size: clamp(10px, 1.15vw, 17px); }
+.estado-puerta.abierta { border-color: #4dff6e; color: #6bff86; animation: latido 1s infinite; }
+.pulso { animation: pulso .35s ease-out; }
+@keyframes pulso { 0% { transform: scale(1.25); color: var(--oro2); } 100% { transform: scale(1); } }
+@keyframes latido { 50% { transform: scale(1.05); } }
+
+.ayuda { position: fixed; left: 50%; bottom: 1.4vh; transform: translateX(-50%); background: rgba(27,14,28,.72); padding: .45em 1.2em; border-radius: 12px; font-size: clamp(9px, 1vw, 15px); white-space: nowrap; pointer-events: none; }
+.info { position: fixed; left: 1.4vw; top: 15vh; background: rgba(0,0,0,.72); color: #c8ffd4; font: 13px/1.5 ui-monospace, monospace; padding: .8em 1em; border-radius: 10px; white-space: pre; pointer-events: none; }
+.vineta { position: fixed; inset: 0; pointer-events: none; box-shadow: inset 0 0 12vmin 4vmin rgba(230,10,10,.55); opacity: 0; transition: opacity .25s; }
+.vineta.activa { opacity: 1; animation: alarma .5s infinite alternate; }
+@keyframes alarma { to { box-shadow: inset 0 0 9vmin 2vmin rgba(230,10,10,.35); } }
+
+.cartel { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(10,5,10,.55); }
+.cartel[hidden] { display: none; }
+#intro { background: rgba(0,0,0,.25); pointer-events: none; }
+.carta { background: rgba(27,14,28,.95); border: 4px solid var(--guindo); border-radius: 22px; padding: 1.4em 2.4em; text-align: center; min-width: min(560px, 86vw); box-shadow: 0 20px 50px rgba(0,0,0,.5); animation: entra .45s cubic-bezier(.2,1.4,.5,1); }
+.carta.sin-fondo { background: none; border: 0; box-shadow: none; }
+.carta h1 { font-family: Rye, serif; font-weight: 400; font-size: clamp(28px, 6vw, 84px); margin: .1em 0 .2em; color: #ee4436; text-shadow: 3px 4px 0 rgba(0,0,0,.4); }
+#intro h1 { color: var(--oro); }
+#intro p { font-size: clamp(14px, 2vw, 30px); font-weight: 800; text-shadow: 0 2px 8px #000; margin: 0; }
+.cartel.gano .carta { border-color: var(--oro); }
+.cartel.gano .carta h1 { color: var(--oro); }
+.carta h2 { font-family: Rye, serif; font-weight: 400; color: var(--oro); }
+.carta small { color: var(--oro); font-weight: 800; letter-spacing: .08em; }
+.grande { font-family: Rye, serif; font-size: clamp(34px, 5vw, 72px); line-height: 1.1; }
+.carta p { margin: .4em 0 1em; }
+.boton { font: 800 clamp(14px, 1.6vw, 22px) Sniglet, sans-serif; background: var(--guindo); color: var(--texto); border: 3px solid var(--oro); border-radius: 14px; padding: .55em 1.6em; cursor: pointer; }
+.boton:hover { background: var(--oro); color: var(--noche); }
+.ruleta { width: 46px; height: 46px; margin: .4em auto; border-radius: 50%; border: 5px solid rgba(249,195,59,.25); border-top-color: var(--oro); animation: gira 1s linear infinite; }
+@keyframes gira { to { transform: rotate(360deg); } }
+@keyframes entra { from { transform: scale(.85); opacity: 0; } }
+
+/* Carrera */
+.vidas { display: flex; gap: .25em; margin-top: .2em; }
+.vidas svg { width: 1.6em; height: 1.6em; }
+.vidas svg.perdida { opacity: .25; filter: grayscale(1); }
+.controles-tactiles { position: fixed; bottom: 7vh; inset-inline: 0; display: none; justify-content: space-between; padding: 0 5vw; }
+.controles-tactiles button { font: 800 18px Sniglet, sans-serif; background: rgba(142,26,74,.85); color: #fff; border: 3px solid var(--oro); border-radius: 50%; width: 84px; height: 84px; }
+@media (pointer: coarse) { .controles-tactiles { display: flex; } }

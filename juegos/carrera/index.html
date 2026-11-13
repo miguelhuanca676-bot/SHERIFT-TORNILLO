@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sheriff Tornillo · Carrera en el Desierto</title>
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../juego.css">
+<script type="importmap">{ "imports": { "three": "../lib/three.module.min.js" } }</script>
+</head>
+<body class="carrera">
+<canvas id="lienzo" tabindex="0" aria-label="Juego: Carrera en el Desierto"></canvas>
+
+<div class="hud">
+  <div class="tarjeta izq">
+    <svg class="moneda-ic" viewBox="0 0 30 30" aria-hidden="true"><circle cx="15" cy="15" r="13" fill="#f9c33b" stroke="#a87a14" stroke-width="2"/><path d="M10.5 9v7a4.5 4.5 0 0 0 9 0V9" fill="none" stroke="#8a5f0c" stroke-width="2.6" stroke-linecap="round"/></svg>
+    <div><small>PUNTOS</small><b id="puntos">0</b></div>
+  </div>
+  <div class="centro">
+    <div class="titulo">SHERIFF TORNILLO</div>
+    <div class="estado-puerta" id="meta" style="border-color:#f9c33b;color:#ffe08a">META: 1000 PUNTOS</div>
+  </div>
+  <div class="tarjeta der">
+    <div><small>VIDAS · VELOCIDAD</small>
+      <div class="vidas" id="vidas"></div>
+      <div class="barra"><i id="barraVel"></i></div></div>
+  </div>
+</div>
+<div class="ayuda" id="ayuda">↑ / ESPACIO saltar · ↓ deslizarse · P pausa · R reiniciar · V cámara · M música</div>
+<div class="controles-tactiles"><button id="tSalta">SALTA</button><button id="tDesliza">AGACHA</button></div>
+
+<div class="cartel" id="carga"><div class="carta"><div class="ruleta"></div><h2>Cargando…</h2><p id="cargaTxt">Ensillando al Sheriff</p></div></div>
+<div class="cartel" id="cuenta" hidden><div class="carta sin-fondo"><h1 id="cuentaTxt">3</h1></div></div>
+<div class="cartel" id="pausa" hidden><div class="carta"><h1 style="color:#f9c33b">Pausa</h1><p>P o ESC para seguir · R para reiniciar</p></div></div>
+<div class="cartel" id="final" hidden>
+  <div class="carta">
+    <h1 id="finTitulo">Juego terminado</h1>
+    <small>PUNTAJE FINAL</small>
+    <div class="grande" id="finPuntaje">0</div>
+    <div id="finEstrellas" style="font-size:34px;letter-spacing:6px"></div>
+    <p id="finStats"></p>
+    <button id="btnOtra" class="boton">REINTENTAR (R)</button>
+    <button id="btnSeguir" class="boton" hidden style="margin-left:8px">SEGUIR CORRIENDO (ENTER)</button>
+  </div>
+</div>
+
+<script type="module" src="carrera.js"></script>
+</body>
+</html>

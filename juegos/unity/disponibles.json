@@ -1,0 +1,5 @@
+{
+  "_ayuda": "Pon true cuando subas la build de Unity WebGL a juegos/unity/<juego>/ (con su index.html, Build/ y TemplateData/). Mientras esté en false, el portal usa la versión web 3D.",
+  "carrera": false,
+  "laberinto": false
+}

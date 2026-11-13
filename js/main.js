@@ -2,13 +2,15 @@
    SHERIFF TORNILLO · Portal oficial · main.js
    ========================================================= */
 
-/* ⚙️ CONFIGURACIÓN DEL JUEGO */
+/* ⚙️ CONFIGURACIÓN DE LOS JUEGOS
+   Cada sección carga su juego DENTRO de la página (un iframe en su propia área), solo al presionar START.
+   · Si existe la build de Unity WebGL en  juegos/unity/<juego>/index.html  se usa esa.
+   · Si no, se usa la versión web 3D (Three.js) incluida en  juegos/<juego>/index.html.
+   Para forzar una de las dos, cambia "preferir" a "unity" o "web". */
 const CONFIG = {
-  // Enlace público del juego en Unity Play
-  urlUnity: "https://play.unity.com/en/games/3797a0b4-e17b-46d5-ab0b-ebe0cbc3c7af/sheriff-tornillo",
-  // Opcional: el "src" del código de inserción (Unity Play > Share > Embed).
-  // Si lo dejas vacío, el botón abre el juego en una pestaña nueva.
-  urlEmbed: ""
+  preferir: "auto",
+  // Enlace de referencia del Juego 1 en Unity Play (no se abre: los juegos se juegan aquí mismo)
+  urlUnityPlay: "https://play.unity.com/en/games/3797a0b4-e17b-46d5-ab0b-ebe0cbc3c7af/sheriff-tornillo"
 };
 
 const reducido = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -30,20 +32,61 @@ if (window.VanillaTilt && !reducido && matchMedia("(pointer:fine)").matches) {
   VanillaTilt.init($$("[data-tilt]"));
 }
 
-/* ---------- Enlaces del juego ---------- */
+/* ---------- Juegos: botón START, carga en la misma página ---------- */
 (() => {
-  const jugar = $("#btnJugar"), directo = $("#linkDirecto"), play = $("#btnPlay");
-  jugar.href = directo.href = CONFIG.urlUnity;
-  const cargar = (e) => {
-    if (!CONFIG.urlEmbed) { if (e.currentTarget === play) window.open(CONFIG.urlUnity, "_blank", "noopener"); return; }
-    e.preventDefault();
-    const f = document.createElement("iframe");
-    f.src = CONFIG.urlEmbed; f.title = "Sheriff Tornillo – juego";
-    f.allow = "autoplay; fullscreen; gamepad"; f.allowFullscreen = true;
-    $("#portada").replaceWith(f);
+  const consolas = $$(".consola-juego");
+  // juegos/unity/disponibles.json dice qué builds de Unity WebGL están subidas
+  let builds = null;
+  const hayBuild = async (id) => {
+    if (!builds) { try { builds = await (await fetch("juegos/unity/disponibles.json", { cache: "no-store" })).json(); } catch (e) { builds = {}; } }
+    return builds[id] === true;
   };
-  play.addEventListener("click", cargar);
-  jugar.addEventListener("click", cargar);
+  const estado = (c, txt, tipo) => {
+    $("[data-estado-txt]", c).textContent = txt;
+    $("[data-estado]", c).dataset.tipo = tipo;
+  };
+  const botones = (c, activo) => {
+    $$('[data-accion="reiniciar"],[data-accion="completa"],[data-accion="detener"]', c).forEach(b => b.disabled = !activo);
+    const start = $('[data-accion="start"]', c);
+    start.innerHTML = activo ? '<i class="bi bi-play-fill"></i> JUGANDO' : '<i class="bi bi-play-fill"></i> START';
+    start.classList.toggle("activo", activo);
+  };
+  const detener = (c) => {
+    const f = $("iframe", c); if (f) f.remove();
+    $("[data-espera]", c).hidden = false;
+    $("[data-fuente]", c).textContent = "";
+    estado(c, "En espera · presiona START", "espera"); botones(c, false);
+  };
+  const iniciar = async (c) => {
+    if ($("iframe", c)) { $("iframe", c).focus(); return; }
+    consolas.filter(o => o !== c).forEach(detener);          // un juego a la vez
+    estado(c, "Cargando…", "carga");
+    let fuente = c.dataset.web, nombre = "Versión web 3D";
+    if (CONFIG.preferir !== "web" && (CONFIG.preferir === "unity" || await hayBuild(c.dataset.juego))) { fuente = c.dataset.unity; nombre = "Build Unity WebGL"; }
+    const f = document.createElement("iframe");
+    f.src = fuente; f.title = "Juego: " + $("h2", c.closest("section")).textContent;
+    f.allow = "autoplay; fullscreen; gamepad"; f.allowFullscreen = true;
+    f.addEventListener("load", () => { f.focus(); try { f.contentWindow.focus(); } catch (e) {} });
+    $("[data-espera]", c).hidden = true;
+    $(".area-juego", c).appendChild(f);
+    $("[data-fuente]", c).textContent = nombre;
+    estado(c, "En juego · usa el teclado", "juego"); botones(c, true);
+  };
+  consolas.forEach(c => {
+    $('[data-accion="start"]', c).addEventListener("click", () => iniciar(c));
+    $('[data-accion="detener"]', c).addEventListener("click", () => detener(c));
+    $('[data-accion="reiniciar"]', c).addEventListener("click", () => { const f = $("iframe", c); if (f) { f.src = f.src; } });
+    $('[data-accion="completa"]', c).addEventListener("click", () => { const a = $(".area-juego", c); (a.requestFullscreen || a.webkitRequestFullscreen || (() => {})).call(a); setTimeout(() => { const f = $("iframe", c); if (f) f.focus(); }, 300); });
+    $(".area-juego", c).addEventListener("click", () => { const f = $("iframe", c); if (f) f.focus(); });
+  });
+  // Mensajes que mandan los juegos (puntaje y fin de partida)
+  addEventListener("message", (ev) => {
+    const d = ev.data; if (!d || d.origen !== "sheriff-juego") return;
+    const c = consolas.find(o => { const f = $("iframe", o); return f && f.contentWindow === ev.source; });
+    if (!c) return;
+    if (d.tipo === "puntaje") estado(c, `En juego · ${d.puntaje} pts · faltan ${d.restantes}`, "juego");
+    if (d.tipo === "fin") estado(c, (d.victoria ? "¡Victoria! " : "Juego terminado · ") + d.puntaje + " pts", d.victoria ? "victoria" : "derrota");
+  });
 })();
 
 /* ---------- Scroll: navbar, barra de progreso, botón arriba, parallax ---------- */
