@@ -68,15 +68,26 @@
   <div class="container">
     <a class="navbar-brand text-decoration-none" href="#inicio">
       <svg class="logo" viewBox="0 0 24 24"><use href="#estrella"/></svg>
-      <span><span class="t1">Sheriff Tornillo</span><span class="t2">CARRERA EN EL DESIERTO</span></span>
+      <span><span class="t1">Sheriff Tornillo</span><span class="t2">2 JUEGOS 3D · J. M. HUANCA</span></span>
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuMovil" aria-controls="menuMovil" aria-label="Abrir menú"><i class="bi bi-list"></i></button>
     <div class="collapse navbar-collapse" id="menuPrincipal">
       <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
-        <li class="nav-item"><a class="nav-link" href="#historia">Historia</a></li>
-        <li class="nav-item"><a class="nav-link" href="#personaje">Personaje</a></li>
-        <li class="nav-item"><a class="nav-link" href="#mecanicas">Mecánicas</a></li>
-        <li class="nav-item"><a class="nav-link" href="#datos">Datos</a></li>
+        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#carrera" role="button" data-bs-toggle="dropdown" aria-expanded="false">Carrera</a>
+          <ul class="dropdown-menu dropdown-menu-st">
+            <li><a class="dropdown-item" href="#historia"><i class="bi bi-book me-2"></i>Historia</a></li>
+            <li><a class="dropdown-item" href="#personaje"><i class="bi bi-person-badge me-2"></i>Personaje</a></li>
+            <li><a class="dropdown-item" href="#mecanicas"><i class="bi bi-controller me-2"></i>Mecánicas</a></li>
+            <li><a class="dropdown-item" href="#datos"><i class="bi bi-bar-chart me-2"></i>Datos</a></li>
+            <li><a class="dropdown-item" href="#juego1"><i class="bi bi-play-fill me-2"></i>Jugar</a></li>
+          </ul></li>
+        <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#laberinto" role="button" data-bs-toggle="dropdown" aria-expanded="false">Laberinto</a>
+          <ul class="dropdown-menu dropdown-menu-st">
+            <li><a class="dropdown-item" href="#lab-historia"><i class="bi bi-book me-2"></i>Historia</a></li>
+            <li><a class="dropdown-item" href="#lab-mecanicas"><i class="bi bi-controller me-2"></i>Mecánicas</a></li>
+            <li><a class="dropdown-item" href="#lab-datos"><i class="bi bi-bar-chart me-2"></i>Datos</a></li>
+            <li><a class="dropdown-item" href="#juego2"><i class="bi bi-play-fill me-2"></i>Jugar</a></li>
+          </ul></li>
         <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
         <li class="nav-item ms-lg-2"><a class="btn btn-st btn-juego1 btn-st-sm" href="#juego1"><i class="bi bi-1-circle-fill"></i> Juego 1</a></li>
         <li class="nav-item"><a class="btn btn-st btn-juego2 btn-st-sm" href="#juego2"><i class="bi bi-2-circle-fill"></i> Juego 2</a></li>
@@ -92,10 +103,15 @@
   </div>
   <div class="offcanvas-body d-flex flex-column">
     <nav class="nav flex-column gap-1">
+      <span class="menu-grupo">JUEGO 1 · CARRERA</span>
       <a class="nav-link" href="#historia" data-bs-dismiss="offcanvas"><i class="bi bi-book me-2"></i>Historia</a>
       <a class="nav-link" href="#personaje" data-bs-dismiss="offcanvas"><i class="bi bi-person-badge me-2"></i>Personaje</a>
       <a class="nav-link" href="#mecanicas" data-bs-dismiss="offcanvas"><i class="bi bi-controller me-2"></i>Mecánicas</a>
       <a class="nav-link" href="#datos" data-bs-dismiss="offcanvas"><i class="bi bi-bar-chart me-2"></i>Datos</a>
+      <span class="menu-grupo">JUEGO 2 · LABERINTO</span>
+      <a class="nav-link" href="#lab-historia" data-bs-dismiss="offcanvas"><i class="bi bi-book me-2"></i>Historia</a>
+      <a class="nav-link" href="#lab-mecanicas" data-bs-dismiss="offcanvas"><i class="bi bi-controller me-2"></i>Mecánicas</a>
+      <a class="nav-link" href="#lab-datos" data-bs-dismiss="offcanvas"><i class="bi bi-bar-chart me-2"></i>Datos</a>
       <a class="nav-link" href="#faq" data-bs-dismiss="offcanvas"><i class="bi bi-question-circle me-2"></i>Preguntas frecuentes</a>
     </nav>
     <a class="btn btn-st btn-juego1 mt-4" href="#juego1" data-bs-dismiss="offcanvas"><i class="bi bi-1-circle-fill"></i> JUEGO 1 · Carrera</a>
@@ -132,6 +148,7 @@
 </section>
 
 <!-- ================= 2. SECCIÓN PRINCIPAL ================= -->
+<div class="separador-juego" id="carrera" aria-hidden="true"><span><i class="bi bi-1-circle-fill"></i> JUEGO 1 · CARRERA EN EL DESIERTO</span></div>
 <header class="hero" id="inicio">
   <div class="sol" id="sol"></div>
   <canvas id="polvo" aria-hidden="true"></canvas>
@@ -144,7 +161,7 @@
   <div class="container">
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
-        <div data-aos="fade-up"><span class="insignia"><span class="punto"></span>2 JUEGOS 3D · WESTERN</span></div>
+        <div data-aos="fade-up"><span class="insignia"><span class="punto"></span>JUEGO 1 · ENDLESS RUNNER 3D · WESTERN</span></div>
         <h2 class="hero-titulo" data-aos="fade-up" data-aos-delay="100">Sheriff<br>Tornillo</h2>
         <div class="hero-sub" data-aos="fade-up" data-aos-delay="150">Carrera en el Desierto</div>
         <p class="hero-frase" data-aos="fade-up" data-aos-delay="200"><span id="maquina">El oro no se recupera solo, compañero.</span><span class="cursor"></span></p>
@@ -185,7 +202,7 @@
 <section class="seccion papel" id="historia">
   <div class="container">
     <div class="cabecera" data-aos="fade-up">
-      <span class="kicker"><i class="bi bi-book"></i>CAPÍTULO I · HISTORIA</span>
+      <span class="kicker"><i class="bi bi-book"></i>JUEGO 1 · CAPÍTULO I · HISTORIA</span>
       <h2>La gran fuga del oro</h2>
       <p>Una persecución a toda máquina por el desierto, desde la tarde hasta la puesta del sol.</p>
     </div>
@@ -246,7 +263,7 @@
 <section class="seccion personaje" id="personaje">
   <div class="container">
     <div class="cabecera" data-aos="fade-up">
-      <span class="kicker"><i class="bi bi-person-badge"></i>CAPÍTULO II · PERSONAJE</span>
+      <span class="kicker"><i class="bi bi-person-badge"></i>JUEGO 1 · CAPÍTULO II · PERSONAJE</span>
       <h2>El Sheriff Tornillo</h2>
       <p>El último robot vaquero que todavía cree en la ley del Oeste.</p>
     </div>
@@ -312,7 +329,7 @@
   <svg class="borde-roto arriba" viewBox="0 0 1440 38" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0h1440v14l-60 10-80-8-90 12-70-6-110 14-90-12-80 10-120-8-90 12-100-10-80 8-120-6-90 12-80-10-110 8-60-6L0 22z" fill="currentColor"/></svg>
   <div class="container">
     <div class="cabecera" data-aos="fade-up">
-      <span class="kicker"><i class="bi bi-controller"></i>CAPÍTULO III · MECÁNICAS</span>
+      <span class="kicker"><i class="bi bi-controller"></i>JUEGO 1 · CAPÍTULO III · MECÁNICAS</span>
       <h2>Cómo se juega</h2>
       <p>Fácil de aprender, difícil de dominar. Pulsa las teclas en tu teclado y mira cómo se iluminan.</p>
     </div>
@@ -407,7 +424,7 @@
 <section class="seccion datos" id="datos">
   <div class="container">
     <div class="cabecera" data-aos="fade-up">
-      <span class="kicker"><i class="bi bi-bar-chart-fill"></i>CAPÍTULO IV · DATOS</span>
+      <span class="kicker"><i class="bi bi-bar-chart-fill"></i>JUEGO 1 · CAPÍTULO IV · DATOS</span>
       <h2>El proyecto en números</h2>
       <p>Las cifras que hay detrás de cada carrera.</p>
     </div>
@@ -535,6 +552,212 @@
   </div>
 </section>
 
+<!-- =====================================================================
+     JUEGO 2 · EL LABERINTO DEL ORO  (sus secciones: portada, historia, mecánicas, datos y zona de juego)
+     ===================================================================== -->
+<div class="separador-juego" id="laberinto" aria-hidden="true"><span><i class="bi bi-2-circle-fill"></i> JUEGO 2 · EL LABERINTO DEL ORO</span></div>
+
+<section class="seccion lab-hero" id="lab-inicio" aria-labelledby="labTitulo">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <div data-aos="fade-up"><span class="insignia insignia-verde"><span class="punto"></span>JUEGO 2 · LABERINTO 3D ESTILO PAC-MAN</span></div>
+        <h2 class="hero-titulo lab-titulo" id="labTitulo" data-aos="fade-up" data-aos-delay="100">El Laberinto<br>del Oro</h2>
+        <p class="hero-desc mt-3" data-aos="fade-up" data-aos-delay="200">Los <b>Hermanos Óxido</b> escondieron el oro del pueblo en un laberinto de adobe. El Sheriff Tornillo debe recoger las <b>36 monedas</b> y escapar por la puerta, sin que lo atrape ninguno de los <b>dos bandidos</b> que patrullan los pasillos.</p>
+        <div class="d-flex flex-wrap gap-3 my-4" data-aos="fade-up" data-aos-delay="250">
+          <a href="#juego2" class="btn btn-st btn-juego2"><i class="bi bi-play-fill me-1"></i>JUGAR AHORA</a>
+          <a href="#lab-mecanicas" class="btn btn-st btn-st-pizarra"><i class="bi bi-map me-1"></i>Ver el plano</a>
+        </div>
+        <div class="row g-2 g-sm-3" style="max-width:560px" data-aos="fade-up" data-aos-delay="300">
+          <div class="col-4"><div class="metrica"><svg viewBox="0 0 30 30" width="28" height="28"><use href="#moneda"/></svg><b data-cuenta="36">36</b><small>puntos para abrir la puerta</small></div></div>
+          <div class="col-4"><div class="metrica"><i class="bi bi-robot" style="color:#ff6a5a"></i><b data-cuenta="2">2</b><small>bandidos con pathfinding</small></div></div>
+          <div class="col-4"><div class="metrica"><i class="bi bi-eye-fill" style="color:#b48cff"></i><b><span data-cuenta="8">8</span> u</b><small>alcance del rayo de visión</small></div></div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="zoom-in" data-aos-delay="200">
+        <div class="monitor" data-tilt data-tilt-max="6" data-tilt-glare data-tilt-max-glare=".15" data-tilt-scale="1.02">
+          <div class="barra-ventana"><span></span><span></span><span></span><em>sheriff-tornillo · el laberinto del oro</em></div>
+          <img src="img/laberinto.jpg" alt="Captura del Laberinto del Oro: vista desde arriba con las monedas, los dos bandidos y el Sheriff en la entrada" width="1280" height="720" loading="lazy">
+          <div class="sello sello-verde">Pathfinding + Raycasting</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion papel" id="lab-historia">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-book"></i>JUEGO 2 · CAPÍTULO I · HISTORIA</span>
+      <h2>El escondite de los Óxido</h2>
+      <p>Después de la carrera por el desierto, la banda se refugió con el botín en su laberinto.</p>
+    </div>
+    <div class="row g-5 align-items-start">
+      <div class="col-lg-6">
+        <div class="linea-tiempo">
+          <article class="hito" data-aos="fade-right">
+            <span class="marca-hito"><i class="bi bi-bricks"></i></span>
+            <span class="etapa">EL LUGAR</span>
+            <h3>Un laberinto de adobe</h3>
+            <p>Once columnas por nueve filas de pasillos de tierra y muros de adobe en medio del desierto. Solo tiene una entrada abajo (F9) y una salida arriba (F1), protegida por una puerta de saloon.</p>
+          </article>
+          <article class="hito" data-aos="fade-right" data-aos-delay="100">
+            <span class="marca-hito"><i class="bi bi-coin"></i></span>
+            <span class="etapa">EL BOTÍN</span>
+            <h3>36 monedas regadas</h3>
+            <p>Los bandidos dejaron el oro repartido por los pasillos. La puerta de salida no se abre mientras quede una sola moneda en el laberinto.</p>
+          </article>
+          <article class="hito" data-aos="fade-right" data-aos-delay="200">
+            <span class="marca-hito"><i class="bi bi-star-fill"></i></span>
+            <span class="etapa">LA MISIÓN</span>
+            <h3>Entrar, recoger y escapar</h3>
+            <p>El Sheriff entra por F9 y empieza en F8. Tiene que juntar todo el oro y salir por F1 sin que un bandido lo toque, porque no hay vidas extra.</p>
+          </article>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="row g-3">
+          <div class="col-sm-6" data-aos="fade-up"><div class="guardian rojo"><svg viewBox="0 0 100 100"><use href="#oxido"/></svg><h4>Bandido Rojo · E1</h4><p>Inicia en <b>E5</b>. Patrulla el ala izquierda: E6 → B6 → B2 → E2.</p></div></div>
+          <div class="col-sm-6" data-aos="fade-up" data-aos-delay="100"><div class="guardian morado"><svg viewBox="0 0 100 100" style="transform:scaleX(-1)"><use href="#oxido"/></svg><h4>Bandido Morado · E2</h4><p>Inicia en <b>G5</b>. Patrulla el ala derecha: G6 → J6 → J2 → G2.</p></div></div>
+          <div class="col-12" data-aos="fade-up" data-aos-delay="200"><div class="guardian sheriff"><div class="d-flex align-items-center gap-3"><img src="img/personaje.jpg" alt="Sheriff Tornillo" width="84" height="84" style="border-radius:14px;object-fit:cover"><div><h4>Sheriff Tornillo</h4><p class="mb-0">El mismo robot de la carrera, con sus estados <b>Quieto</b>, <b>Correr</b> y <b>Morir</b>. Avanza a <b>3 u/s</b> y no atraviesa los muros.</p></div></div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion datos" id="lab-mecanicas">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-controller"></i>JUEGO 2 · CAPÍTULO II · MECÁNICAS</span>
+      <h2>Cómo se juega</h2>
+      <p>Pac-Man con sombrero: monedas, pasillos, una puerta y dos bandidos que te buscan con un rayo de visión.</p>
+    </div>
+
+    <ul class="nav nav-pills nav-pills-st justify-content-center mb-4" role="tablist" data-aos="fade-up">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#labControles" type="button" role="tab"><i class="bi bi-keyboard me-1"></i>Controles</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#labReglas" type="button" role="tab"><i class="bi bi-journal-text me-1"></i>Reglas</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#labEnemigos" type="button" role="tab"><i class="bi bi-robot me-1"></i>Enemigos</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#labPlano" type="button" role="tab"><i class="bi bi-map me-1"></i>Plano</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#labFin" type="button" role="tab"><i class="bi bi-flag me-1"></i>Victoria y derrota</button></li>
+    </ul>
+
+    <div class="tab-content" data-aos="fade-up">
+      <div class="tab-pane fade show active" id="labControles" role="tabpanel">
+        <div class="tarjeta">
+          <div class="row g-4 align-items-center">
+            <div class="col-md-5">
+              <div class="teclado-wrap mx-auto" style="max-width:300px">
+                <div class="teclado">
+                  <div class="fila"><span class="tecla usada" data-k="l" title="Rayos y rutas">L</span><span class="tecla usada" data-k="ArrowUp" title="Arriba">↑</span><span class="tecla usada" data-k="v" title="Vista">V</span></div>
+                  <div class="fila"><span class="tecla usada" data-k="ArrowLeft" title="Izquierda">←</span><span class="tecla usada" data-k="ArrowDown" title="Abajo">↓</span><span class="tecla usada" data-k="ArrowRight" title="Derecha">→</span></div>
+                  <div class="fila"><span class="tecla usada" data-k="r" title="Reiniciar">R</span><span class="tecla usada" data-k="m" title="Música">M</span><span class="tecla usada" data-k="F1" title="Info técnica">F1</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="leyenda-teclas" style="margin-top:0;grid-template-columns:1fr 1fr">
+                <div><span class="tecla">←</span><span class="tecla">↑</span><span class="tecla">↓</span><span class="tecla">→</span> <span><b>Mover</b> · una dirección a la vez, 3 u/s</span></div>
+                <div><span class="tecla">R</span> <span><b>Reiniciar</b> la partida en cualquier momento</span></div>
+                <div><span class="tecla">L</span> <span>Mostrar u ocultar <b>rayos, radio y rutas</b></span></div>
+                <div><span class="tecla">V</span> <span><b>Vista</b> inclinada o totalmente cenital</span></div>
+                <div><span class="tecla">M</span> <span><b>Música</b> western on/off</span></div>
+                <div><span class="tecla">F1</span> <span><b>Panel técnico:</b> estados, rayo y celda</span></div>
+              </div>
+              <p class="small mt-3 mb-0" style="color:#6b4a35">El Sheriff gira solo hacia donde avanza y se centra en el pasillo para doblar las esquinas, como en Pac-Man. Si choca contra un muro, se queda en el estado Quieto.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="labReglas" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-lg-6"><div class="tarjeta">
+            <h3><i class="bi bi-coin me-2"></i>Puntos</h3>
+            <div class="regla"><div class="ic"><svg viewBox="0 0 30 30" width="28"><use href="#moneda"/></svg></div><div><h4>36 monedas · +10 cada una</h4><p>Cada moneda suma <b>10 puntos</b> y desaparece al recogerla. El máximo de la partida es <b>360 puntos</b>.</p></div></div>
+            <div class="regla"><div class="ic"><i class="bi bi-bar-chart-steps"></i></div><div><h4>Marcador en vivo</h4><p>Arriba se ven el <b>PUNTAJE</b> y los <b>PUNTOS RESTANTES</b>, con una barra de progreso.</p></div></div>
+          </div></div>
+          <div class="col-lg-6"><div class="tarjeta">
+            <h3><i class="bi bi-door-closed me-2"></i>Puerta y reinicio</h3>
+            <div class="regla"><div class="ic"><i class="bi bi-lock-fill"></i></div><div><h4>Puerta cerrada</h4><p>Con luces <b>rojas</b> mientras quede una moneda. Con la última se abre como puerta de saloon y sus luces pasan a <b>verde</b>.</p></div></div>
+            <div class="regla"><div class="ic"><i class="bi bi-arrow-clockwise"></i></div><div><h4>Tecla R</h4><p>Reinicia la partida en cualquier momento.</p></div></div>
+          </div></div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="labEnemigos" role="tabpanel">
+        <div class="row g-4 row-cols-1 row-cols-md-3">
+          <div class="col"><div class="obs-card"><i class="bi bi-signpost-split tecno"></i><h4>Pathfinding</h4><span class="badge badge-st mt-2"><i class="bi bi-diagram-3"></i> NAVMESH</span><p>Cada bandido calcula solo su camino por los pasillos, hacia el siguiente punto de su ruta o hacia el jugador, sin atravesar los muros.</p></div></div>
+          <div class="col"><div class="obs-card"><i class="bi bi-eye tecno"></i><h4>Raycasting</h4><span class="badge badge-st mt-2"><i class="bi bi-bullseye"></i> RAYO DE 8 u</span><p>Lanza un rayo hacia el Sheriff. Si lo primero que toca es el Sheriff y está a 8 u o menos, lo ve. Si toca un muro, no lo ve.</p></div></div>
+          <div class="col"><div class="obs-card"><i class="bi bi-lightning-charge tecno"></i><h4>Persecución</h4><span class="badge badge-st mt-2"><i class="bi bi-arrow-repeat"></i> PATRULLA ⇄ PERSECUCIÓN</span><p>Mientras lo ve, va hacia él a <b>3,5 u/s</b> y aparece un «!» sobre su cabeza. Si lo pierde de vista, vuelve a su ruta a 2,5 u/s.</p></div></div>
+        </div>
+        <div class="tarjeta mt-4">
+          <table class="table tabla-st mb-0">
+            <thead><tr><th>Enemigo</th><th>Inicio</th><th>Ruta (se repite)</th><th>Velocidad</th></tr></thead>
+            <tbody>
+              <tr><td><span class="pastilla rojo">E1</span> Bandido Rojo</td><td>E5</td><td>E6 → B6 → B2 → E2</td><td>2,5 u/s · 3,5 u/s persiguiendo</td></tr>
+              <tr><td><span class="pastilla morado">E2</span> Bandido Morado</td><td>G5</td><td>G6 → J6 → J2 → G2</td><td>2,5 u/s · 3,5 u/s persiguiendo</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="labPlano" role="tabpanel">
+        <div class="tarjeta">
+          <div class="row g-4 align-items-center">
+            <div class="col-lg-7"><img src="img/plano-laberinto.svg" alt="Plano del laberinto 11 x 9: paredes, 36 puntos, rutas numeradas de los enemigos E1 y E2, jugador en F8, entrada F9 y salida F1" class="img-fluid plano" width="528" height="444" loading="lazy"></div>
+            <div class="col-lg-5">
+              <h3><i class="bi bi-grid-3x3 me-2"></i>El plano</h3>
+              <ul class="lista-plano">
+                <li><b>11 columnas × 9 filas</b> (A–K, 1–9), celdas de 2 × 2 u.</li>
+                <li><b>Entrada</b> en F9, abajo · <b>salida</b> en F1, arriba, con la puerta.</li>
+                <li>El <b>Sheriff</b> empieza en F8.</li>
+                <li>Los <b>36 puntos</b> ocupan las celdas libres, menos las de las rutas y las de inicio.</li>
+                <li>Los círculos numerados marcan el orden de la ruta de cada bandido.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-pane fade" id="labFin" role="tabpanel">
+        <div class="row g-4">
+          <div class="col-md-6"><div class="estado-fin gana"><h4><i class="bi bi-trophy-fill text-warning me-2"></i>Victoria</h4><p>Recoge los 36 puntos y entra en la salida (F1) con la puerta abierta: aparece el panel <b>«Victoria»</b> con tu puntaje final, suena una fanfarria, cae confeti y el Sheriff festeja.</p></div></div>
+          <div class="col-md-6"><div class="estado-fin pierde"><h4><i class="bi bi-heartbreak-fill text-danger me-2"></i>Derrota</h4><p>Si un bandido te toca, la partida termina de inmediato, porque no hay vidas. El Sheriff ejecuta su animación <b>Morir</b>, los bandidos festejan y aparece <b>«Juego terminado»</b> con el puntaje final.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="seccion papel" id="lab-datos">
+  <div class="container">
+    <div class="cabecera" data-aos="fade-up">
+      <span class="kicker"><i class="bi bi-bar-chart-fill"></i>JUEGO 2 · CAPÍTULO III · DATOS</span>
+      <h2>El laberinto en números</h2>
+      <p>Los valores de la especificación, tal como están en el juego.</p>
+    </div>
+    <div class="row g-3 g-lg-4">
+      <div class="col-6 col-lg-3" data-aos="fade-up"><div class="kpi kpi-claro"><i class="bi bi-coin"></i><div class="num" data-cuenta="36">0</div><h4>Puntos a recoger</h4><p>10 puntos cada uno.</p></div></div>
+      <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="100"><div class="kpi kpi-claro"><i class="bi bi-trophy"></i><div class="num" data-cuenta="360">0</div><h4>Puntaje máximo</h4><p>36 monedas × 10 puntos.</p></div></div>
+      <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="200"><div class="kpi kpi-claro"><i class="bi bi-grid-3x3"></i><div class="num"><span data-cuenta="99">0</span><small>celdas</small></div><h4>Laberinto 11 × 9</h4><p>Celdas de 2 × 2 unidades.</p></div></div>
+      <div class="col-6 col-lg-3" data-aos="fade-up" data-aos-delay="300"><div class="kpi kpi-claro"><i class="bi bi-eye"></i><div class="num"><span data-cuenta="8">0</span><small>u</small></div><h4>Alcance de la visión</h4><p>Distancia máxima del rayo.</p></div></div>
+    </div>
+    <div class="row g-3 g-lg-4 mt-1">
+      <div class="col-lg-6" data-aos="fade-up"><div class="panel panel-claro">
+        <h3><i class="bi bi-speedometer2 me-2"></i>¿Quién es más rápido?</h3>
+        <p class="sub">Velocidades en unidades por segundo.</p>
+        <div class="grafica"><canvas id="grafLabVel" aria-label="Gráfica de velocidades: jugador 3, patrulla 2,5 y persecución 3,5 unidades por segundo"></canvas></div>
+      </div></div>
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100"><div class="panel panel-claro">
+        <h3><i class="bi bi-distribute-vertical me-2"></i>Monedas por fila</h3>
+        <p class="sub">Así se reparten las 36 monedas en las filas 2 a 8.</p>
+        <div class="grafica"><canvas id="grafLabFilas" aria-label="Gráfica de monedas por fila"></canvas></div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
 <section class="seccion juego juego-2" id="juego2" aria-labelledby="tituloJuego2">
   <div class="container">
     <div class="cabecera" data-aos="fade-up">
@@ -652,13 +875,13 @@
       <div class="col-lg-5">
         <a class="navbar-brand text-decoration-none mb-3" href="#inicio">
           <svg class="logo" viewBox="0 0 24 24" width="42" height="42"><use href="#estrella"/></svg>
-          <span><span class="t1">Sheriff Tornillo</span><span class="t2">CARRERA EN EL DESIERTO</span></span>
+          <span><span class="t1">Sheriff Tornillo</span><span class="t2">2 JUEGOS 3D · J. M. HUANCA</span></span>
         </a>
         <p class="text-suave small mb-0">Endless runner 3D western desarrollado en Unity 6 para la asignatura Game Development de la Universidad del Valle (Univalle).</p>
       </div>
       <div class="col-6 col-lg-3">
         <h5>Explorar</h5>
-        <ul class="list-unstyled small d-grid gap-1 mb-0"><li><a href="#historia">Historia</a></li><li><a href="#personaje">Personaje</a></li><li><a href="#mecanicas">Mecánicas</a></li><li><a href="#datos">Datos</a></li><li><a href="#faq">FAQ</a></li></ul>
+        <ul class="list-unstyled small d-grid gap-1 mb-0"><li><a href="#carrera">Juego 1 · Carrera en el Desierto</a></li><li><a href="#laberinto">Juego 2 · El Laberinto del Oro</a></li><li><a href="#lab-mecanicas">Mecánicas del laberinto</a></li><li><a href="#faq">FAQ</a></li></ul>
       </div>
       <div class="col-6 col-lg-4">
         <h5>Jugar</h5>

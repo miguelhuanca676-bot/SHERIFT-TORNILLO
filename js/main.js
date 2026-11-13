@@ -189,7 +189,7 @@ $$(".cartel").forEach(c => {
 
 /* ---------- Teclado que se ilumina ---------- */
 (() => {
-  const teclas = $$("#teclado .tecla[data-k]");
+  const teclas = $$(".teclado .tecla[data-k]");
   const marcar = (key, on) => teclas.forEach(t => { if (t.dataset.k.toLowerCase() === key.toLowerCase()) t.classList.toggle("pulsada", on); });
   addEventListener("keydown", e => marcar(e.key, true));
   addEventListener("keyup", e => marcar(e.key, false));
@@ -257,6 +257,24 @@ $$(".cartel").forEach(c => {
     if (reducido) { slider.value = 24; return pintar(24); }
     let v = 10; const id = setInterval(() => { v++; slider.value = v; pintar(v); if (v >= MAX) clearInterval(id); }, 110);
   }, { threshold: .5 }).observe(cvV);
+})();
+
+/* ---------- Gráficas del Juego 2 (laberinto) ---------- */
+(() => {
+  if (!window.Chart) return;
+  const opc = (max, paso, sufijo) => ({
+    responsive: true, maintainAspectRatio: false, animation: { duration: reducido ? 0 : 1200, easing: "easeOutQuart" },
+    plugins: { legend: { display: false }, tooltip: { backgroundColor: "#2a6e35", titleColor: "#ffe08a", padding: 12, cornerRadius: 10, callbacks: { label: c => `${c.raw}${sufijo}` } } },
+    scales: { y: { beginAtZero: true, max, ticks: { stepSize: paso, color: "#6b4a35" }, grid: { color: "rgba(43,26,18,.08)" } }, x: { ticks: { color: "#4b3325" }, grid: { display: false } } }
+  });
+  const cuando = (el, fn) => el && new IntersectionObserver((e, o) => { if (e[0].isIntersecting) { fn(); o.disconnect(); } }, { threshold: .3 }).observe(el);
+  const cv1 = $("#grafLabVel"), cv2 = $("#grafLabFilas");
+  cuando(cv1, () => new Chart(cv1, { type: "bar",
+    data: { labels: ["Sheriff", "Bandido · patrulla", "Bandido · persecución"], datasets: [{ data: [3, 2.5, 3.5], backgroundColor: ["#8e1a4a", "#f6b26b", "#e8332a"], borderColor: "#2b1a12", borderWidth: 2, borderRadius: 10, maxBarThickness: 90 }] },
+    options: opc(4, 1, " u/s") }));
+  cuando(cv2, () => new Chart(cv2, { type: "bar",
+    data: { labels: ["Fila 2", "Fila 3", "Fila 4", "Fila 5", "Fila 6", "Fila 7", "Fila 8"], datasets: [{ data: [5, 4, 8, 3, 4, 4, 8], backgroundColor: "#f9c33b", borderColor: "#a87a14", borderWidth: 2, borderRadius: 8, maxBarThickness: 60 }] },
+    options: opc(9, 1, " monedas") }));
 })();
 
 /* ---------- Calculadora del sheriff ---------- */
